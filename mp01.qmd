@@ -4,6 +4,7 @@ format:
   html:
     code-fold: true
     code-tools: true
+    embed-resources: true
 ---
 
 ```{css}
@@ -37,7 +38,7 @@ table.dataTable tbody td {
 
 
 <div style="text-align: center;">
-  <img src="https://about.netflix.com/images/logo.png" alt="Description" width="300px">
+  <img src="images/netflix-logo.png" alt="Description" width="300px">
 </div>
 
 ## Dressing for my new job
@@ -237,7 +238,7 @@ red_notice_views <- GLOBAL_TOP_10 |>
 ```
 
 
-<img src="https://upload.wikimedia.org/wikipedia/en/0/0c/Red_Notice_-_film_promotional_image.jpg" alt="Red Notice promotional image" class="img-left">
+<img src="images/red-notice.jpg" class="img-left">
 
 I've been focusing on current trends, but looking back a few years can help uncover different trends. Red Notice received **`r format(red_notice_views, big.mark = ",")`** views in 2021. 
 
