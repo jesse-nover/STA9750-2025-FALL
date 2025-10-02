@@ -1,0 +1,415 @@
+---
+title: "Mini-Project 01: Netflix Press Room"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+```{css}
+#| code-summary: "CSS"
+table.dataTable thead th {
+  font-size: 12px !important;
+}
+table.dataTable tbody td {
+  font-size: 12px !important;
+}
+
+.img-left {
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  max-width: 300px;
+}
+
+.img-right {
+  float: right;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  max-width: 300px;
+}
+
+.clear {
+  clear: both;
+}
+
+```
+
+
+<div style="text-align: center;">
+  <img src="https://about.netflix.com/images/logo.png" alt="Description" width="300px">
+</div>
+
+## Dressing for my new job
+
+As a newly hired **data analyst** with the **Netflix** PR team, I think I'm going to need to buy some new clothes. It's October and there is a chill in the air. I'm thinking corduroy.
+
+
+<a href="https://www.studiosuits.com/products/light-gray-thick-corduroy-suit">
+  <img src="https://www.studiosuits.com/cdn/shop/files/lightgraythickcorduroysuitlk_1_1728x.jpg?v=1752569526"
+       alt="corduroy suit" 
+       width="300" class="img-left" />
+</a>
+
+Maybe something like this?
+<div class="clear"></div>
+
+## Getting Started
+
+For my first report, I'll be using [Netflix's TuDum Top Ten](https://www.netflix.com/tudum/top10) data to uncover recent trends. This data is divided into two sets:
+
+- Global Top 10 
+- Country-wide Top 10
+
+Let's get started by downloading the data.
+
+
+```{r}
+#| code-summary: "Download and setup data files"
+if(!dir.exists(file.path("data", "mp01"))){
+    dir.create(file.path("data", "mp01"), showWarnings=FALSE, recursive=TRUE)
+}
+
+GLOBAL_TOP_10_FILENAME <- file.path("data", "mp01", "global_top10_alltime.csv")
+
+if(!file.exists(GLOBAL_TOP_10_FILENAME)){
+    download.file("https://www.netflix.com/tudum/top10/data/all-weeks-global.tsv", 
+                  destfile=GLOBAL_TOP_10_FILENAME)
+}
+
+COUNTRY_TOP_10_FILENAME <- file.path("data", "mp01", "country_top10_alltime.csv")
+
+if(!file.exists(COUNTRY_TOP_10_FILENAME)){
+    download.file("https://www.netflix.com/tudum/top10/data/all-weeks-countries.tsv", 
+                  destfile=COUNTRY_TOP_10_FILENAME)
+}
+```
+
+Now that we have data, let's load some r libraries that we will be using, create some variables to hold dataframes, and begin to clean the data.
+
+```{r}
+#| code-summary: "Create dataframe objects and remove nulls"
+#| message: false
+#| warning: false
+if(!require("tidyverse")) install.packages("tidyverse")
+library(readr)
+library(dplyr)
+
+GLOBAL_TOP_10 <- read_tsv(GLOBAL_TOP_10_FILENAME)
+
+GLOBAL_TOP_10 <- GLOBAL_TOP_10 |>
+  mutate(season_title = if_else(season_title=="N/A", NA, season_title))
+
+COUNTRY_TOP_10 <- read_tsv(COUNTRY_TOP_10_FILENAME, na = c("N/A"))
+```
+
+## Initial Data Exploration
+Let's take a peek at a few rows of the Global Top 10 data. We'll spruce up the table a bit with a few touch-ups:
+
+* Show *Runtimes* in minutes (not hours)
+* Remove underscores from column names
+* Remove *Season Titles*
+* Round the values in *Weekly Hours Viewed* and *Weekly Views*
+
+```{r}
+#| code-summary: "Format tables"
+#| message: false
+#| warning: false
+
+if(!require("DT")) install.packages("DT")
+library(DT)
+library(stringr)
+
+format_titles <- function(df){
+  colnames(df) <- str_replace_all(colnames(df), "_", " ") |> str_to_title()
+  df
+}
+
+# Single pipeline with all transformations
+GLOBAL_TOP_10 |> 
+  mutate(`runtime_(minutes)` = round(60 * runtime)) |>
+  select(-season_title, -runtime) |>
+  format_titles() |>
+  head(n=5) |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)        # Keep column sorting if you want it
+  ) |>
+  formatRound(c('Weekly Hours Viewed', 'Weekly Views')) 
+
+
+```
+
+<br>
+At Netflix, we are a global operation and it is interesting to track global trends. We operate in **`r n_distinct(COUNTRY_TOP_10$country_name)`** countries and it is also enlightening to investigate country-level trends.
+
+```{r}
+#| code-summary: "Find top values"
+
+
+top_non_english_film <- GLOBAL_TOP_10 |>
+  filter(category == 'Films (Non-English)') |>
+  slice_max(cumulative_weeks_in_top_10, n=1)
+```
+
+The top non-English film to trend globally is **`r top_non_english_film$show_title`** with **`r top_non_english_film$cumulative_weeks_in_top_10`** weeks in the top 10.
+
+```{r}
+#| code-summary: "Find top values"
+
+
+longest_film <- GLOBAL_TOP_10 |>
+  select(show_title, category, runtime) |>
+  mutate(runtime_in_minutes = runtime * 60) |>
+  filter(grepl("Films", category)) |>
+  arrange(desc(runtime_in_minutes)) |>
+  slice_max(runtime_in_minutes, n=1, with_ties = FALSE) |>
+  select(show_title, runtime_in_minutes)
+```
+
+The longest film is **`r longest_film$show_title`** at **`r round(longest_film$runtime_in_minutes, 2)`** minutes.
+
+I'll bet you are wondering which of our programs had the most viewership by category. The results are in.
+
+```{r}
+#| code-summary: "Find top values"
+GLOBAL_TOP_10 |>
+  group_by(category) |>
+  slice_max(weekly_hours_viewed, n = 1) |>
+  select(category, show_title, weekly_hours_viewed) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)
+  )
+```
+  
+```{r}
+#| code-summary: "Find top values"
+longest_run_in_a_country <- COUNTRY_TOP_10 |>
+  select(show_title, country_name, cumulative_weeks_in_top_10) |>
+  slice_max(cumulative_weeks_in_top_10, n = 1)
+```
+
+We have seen a lot of popular programming and some shows really stand the test of time. **`r longest_run_in_a_country$show_title`** ran for a record **`r longest_run_in_a_country$cumulative_weeks_in_top_10`** weeks in **`r longest_run_in_a_country$country_name`**. Good show!
+
+```{r}
+#| code-summary: "Find one outlier"
+least_weeks <- COUNTRY_TOP_10|>
+  group_by(country_name) |>
+  slice_max(week, n=1) |>
+  ungroup() |>
+  slice_min(week, n=1) |>
+  select(country_name, week) |>
+  slice(1)
+
+```
+
+While we try to stay out of politics, we can't help it if there is occasionally some drama with the countries we serve. Netflix ceased operations in **`r least_weeks$country_name`** in **`r format(least_weeks$week, "%B %d, %Y")`**.
+
+```{r}
+#| code-summary: "Find Squid Games values"
+squid <- GLOBAL_TOP_10 |>
+  select(week, show_title, weekly_views) |>
+  filter(show_title == 'Squid Game') |>
+  summarize(total_viewership = sum(weekly_views, na.rm = TRUE)) |>
+  pull(total_viewership)
+```
+  
+Let's talk about Squid Games! This show has been a phenomenon. We have seen **`r format(squid, big.mark = ",")`** views.
+
+```{r}
+#| code-summary: "Find Red Notice values"
+library(lubridate)
+red_notice_views <- GLOBAL_TOP_10 |>
+  select(week, show_title, weekly_hours_viewed, runtime) |>
+  filter(show_title == 'Red Notice', year(week) == 2021) |>
+  summarize(total_hours_viewed = sum(weekly_hours_viewed)) |>
+  mutate(views_2021 = total_hours_viewed/(118/60)) |>
+  pull(views_2021)
+
+```
+
+
+<img src="https://upload.wikimedia.org/wikipedia/en/0/0c/Red_Notice_-_film_promotional_image.jpg" alt="Red Notice promotional image" class="img-left">
+
+I've been focusing on current trends, but looking back a few years can help uncover different trends. Red Notice received **`r format(red_notice_views, big.mark = ",")`** views in 2021. 
+
+<div class="clear"></div>
+
+
+```{r}
+#| code-summary: "Find rising stars"
+top_us_titles <- COUNTRY_TOP_10 |>
+  select(weekly_rank, week, show_title, country_name) |>
+  filter(country_name == 'United States', weekly_rank == 1) |>
+  pull(show_title)
+
+top_us_starting <- COUNTRY_TOP_10 |>
+  select(week, weekly_rank, show_title, country_name) |>
+  filter(country_name == 'United States', show_title %in% top_us_titles) |>
+  group_by(show_title) |>
+  slice_min(week, n = 1) |>
+  filter(weekly_rank != 1)
+
+show_count <- nrow(top_us_starting)
+
+rising_star <- COUNTRY_TOP_10 |>
+  select(week, weekly_rank, show_title, country_name) |>
+  filter(country_name == 'United States', show_title %in% top_us_titles) |>
+  group_by(show_title) |>
+  slice_min(week, n = 1) |>
+  filter(weekly_rank != 1) |>
+  arrange(desc(week)) |>
+  ungroup() |>
+  slice(1) |>
+  pull(show_title)
+
+```
+
+We are proud of our \#1 ranked shows, but not every show that hits \#1 starts out at \#1. **`r show_count`** shows started at a different rank and worked there way to \#1. The most recent show to do so was **`r rising_star`**.
+
+```{r}
+#| code-summary: "Find global appeal"
+in_most_countries <- COUNTRY_TOP_10 |>
+  select(week, show_title, country_name) |>
+  group_by(show_title) |>
+  slice_min(week, n = 1) |>
+  summarise(total_countries = n()) |>
+  arrange(desc(total_countries)) |>
+  ungroup() |>
+  slice(1)
+
+```
+
+Let's talk about the show that hit the top 10 in the most countries in its debut week. **`r in_most_countries$show_title`** charted in **`r in_most_countries$show_title`** countries! There is no doubt that **`r in_most_countries$show_title`** is a unique and impressive series (not to mention being really entertaining).
+
+## Press Releases
+
+```{r}
+#| code-summary: "Find Stranger Things facts"
+stranger_hours <- GLOBAL_TOP_10 |>
+  select(show_title, weekly_hours_viewed, weekly_views) |>
+  filter(show_title == 'Stranger Things') |>
+  summarize(total_hours_viewed = sum(weekly_hours_viewed, na.rm = TRUE)) |> # weekly views is all null??
+  pull(total_hours_viewed)
+
+
+#the length of popularity (how many weeks in the top 10)
+stranger_length <- GLOBAL_TOP_10 |>
+  select(week, show_title) |>
+  filter(show_title == 'Stranger Things') |>
+  summarize(
+    min_date = min(week, na.rm = TRUE),
+    max_date = max(week, na.rm = TRUE),
+    weeks_between = as.numeric(difftime(max(week, na.rm = TRUE),
+                                        min(week, na.rm = TRUE),
+                                        units = 'weeks'))) |>
+  pull(weeks_between)
+
+#the multinational appeal of previous seasons.
+stranger_countries <- COUNTRY_TOP_10 |>
+  select(country_name, show_title) |>
+  filter(show_title == 'Stranger Things') |>
+  count(country_name) |>
+  nrow()
+
+
+
+```
+
+### Stranger Things
+I hope you are as excited as I am about the next season of **Stranger Things**, due at the end of the year. Our viewers just can't watch enough. Fans have watched a whopping **`r format(stranger_hours, big.mark = ',')`** total hours and the series has spent **`r stranger_length`** weeks on the Global Top 10 list. Speaking of the global appeal of **Stranger Things**, the show has appeared on the Country Top 10 list for **`r stranger_countries`** countries. 
+
+To get a sense for how strong this show has performed, let's look at how **Stranger Things** compares to some of our other very popular series.
+
+```{r}
+#| code-summary: "Stranger Things Comparison"
+#| #compare the impact of Stranger Things to other popular English-language TV shows
+GLOBAL_TOP_10 |>
+  select(show_title, category, week, weekly_hours_viewed) |>
+  filter(category == "TV (English)") |>
+  group_by(show_title) |>
+  summarise(
+    weeks_on_top_10 = n(),                          # number of rows (weeks) per show
+    total_hours_viewed = sum(weekly_hours_viewed, na.rm = TRUE)  # sum of hours
+  ) |>
+  arrange(desc(total_hours_viewed)) |>
+  format_titles() |>
+  head(n = 5) |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)        # Keep column sorting if you want it
+  )
+```
+
+I think you will agree that this has been an epic run. Stay tuned for the 5th and final season!
+
+### Hindi-language programming is taking off
+As our global audience builds and diversifies, some markets provide especially large audiences. India stands out, and we are growing fast there. Have a look at some of our top films and TV shows trending in India recently. In the list below, we have removed trending programming that is also trending in the United States to zero in on Hindi-language content.
+```{r}
+#| code-summary: "India"
+top_us_titles <- COUNTRY_TOP_10 |>
+  select(show_title, country_name, cumulative_weeks_in_top_10) |>
+  filter(country_name == "United States") |>
+  group_by(show_title) |>
+  slice_max(cumulative_weeks_in_top_10, n = 1) |>
+  ungroup() |>
+  arrange(desc(cumulative_weeks_in_top_10)) |>
+  pull(show_title)
+
+COUNTRY_TOP_10 |>
+  select(show_title, country_name, category, cumulative_weeks_in_top_10) |>
+  filter(!(show_title %in% top_us_titles), country_name == "India") |>
+  group_by(show_title) |>
+  slice_max(cumulative_weeks_in_top_10, n = 1) |>
+  ungroup() |>
+  arrange(desc(cumulative_weeks_in_top_10)) |>
+  format_titles() |>
+  head(n = 10) |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)
+  )
+
+```
+
+
+### Korean influence continues to grow
+
+If we look at the intersection of the top programs in South Korea (that are also popular in the United States), we notice something interesting. About half of the shows are of Korean origin. The remainder are of Japanese and US origin.
+
+```{r}
+#| code-summary: "Find popular Korean shows"
+
+COUNTRY_TOP_10 |>
+  select(show_title, country_name, cumulative_weeks_in_top_10) |>
+  filter((show_title %in% top_us_titles), country_name == "South Korea") |>
+  group_by(show_title) |>
+  slice_max(cumulative_weeks_in_top_10, n = 1) |>
+  ungroup() |>
+  arrange(desc(cumulative_weeks_in_top_10)) |>
+  format_titles() |>
+  head(n = 10) |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)
+  )
+```
+
+While the United States continues to be an exporter of great television, South Korea appears to also be growing as an influential exporter and a cultural force. One popular American show, **KPop Demon Hunters**, is steeped in Korean culture and themes. We expect this trend to continue. 
