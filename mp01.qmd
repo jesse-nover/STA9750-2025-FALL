@@ -162,14 +162,16 @@ longest_film <- GLOBAL_TOP_10 |>
   select(show_title, runtime_in_minutes)
 ```
 
-The top non-English film to trend globally is **`r top_non_english_film$show_title`** with **`r top_non_english_film$cumulative_weeks_in_top_10`** weeks in the top 10. The longest film is **`r longest_film$show_title`** at **`r round(longest_film$runtime_in_minutes, 2)`** minutes. I'll bet you are wondering which of our programs had the most viewership by category. The results are in.
+The top non-English film to trend globally is **`r top_non_english_film$show_title`** with **`r top_non_english_film$cumulative_weeks_in_top_10`** weeks in the top 10. The longest film to trend on the Global Top 10 list is **`r longest_film$show_title`** at **`r round(longest_film$runtime_in_minutes, 2)`** minutes. I'll bet you are wondering which of our programs had the most viewership by category. The results are in.
 
 ```{r}
 #| code-summary: "CODE: Find category leaders"
 GLOBAL_TOP_10 |>
+  group_by(category, show_title) |>
+  summarise(total_hours_viewed = sum(weekly_hours_viewed, na.rm = TRUE), .groups = 'drop') |>
   group_by(category) |>
-  slice_max(weekly_hours_viewed, n = 1) |>
-  select(category, show_title, weekly_hours_viewed) |>
+  slice_max(total_hours_viewed, n = 1) |>
+  select(category, show_title, total_hours_viewed) |>
   format_titles() |>
   datatable(
     rownames = FALSE,
@@ -179,7 +181,7 @@ GLOBAL_TOP_10 |>
       info = FALSE,
       ordering = FALSE)
   ) |>
-   formatRound(c('Weekly Hours Viewed'), digits = 0) 
+  formatRound(c('Total Hours Viewed'), digits = 0) 
 ```
   
 <br>
@@ -199,13 +201,13 @@ least_weeks <- COUNTRY_TOP_10|>
   slice(1)
 
 squid <- GLOBAL_TOP_10 |>
-  select(week, show_title, weekly_views) |>
+  select(week, show_title, weekly_views, weekly_hours_viewed) |>
   filter(show_title == 'Squid Game') |>
-  summarize(total_viewership = sum(weekly_views, na.rm = TRUE)) |>
+  summarize(total_viewership = sum(weekly_hours_viewed, na.rm = TRUE)) |>
   pull(total_viewership)
 ```
 
-We have seen a lot of popular programming and some shows really stand the test of time on the Top 10 list. **`r longest_run_in_a_country$show_title`** stayed in the Top 10 for a record **`r longest_run_in_a_country$cumulative_weeks_in_top_10`** weeks in **`r longest_run_in_a_country$country_name`**. Good show! Unfortunately, not every show can trend for that long, and not every country provides the same opportunity. While we try to stay out of politics, we can't help it if there is occasionally some drama with the countries we serve. Netflix ceased operations in **`r least_weeks$country_name`** in **`r format(least_weeks$week, "%B %d, %Y")`**. Enough about politics. Let's talk about Squid Games! This show has been a phenomenon. We have seen **`r format(squid, big.mark = ",")`** views.
+We have seen a lot of popular programming and some shows really stand the test of time on the Top 10 list. **`r longest_run_in_a_country$show_title`** stayed in the Top 10 for a record **`r longest_run_in_a_country$cumulative_weeks_in_top_10`** weeks in **`r longest_run_in_a_country$country_name`**. Good show! Unfortunately, not every show can trend for that long, and not every country provides the same opportunity. While we try to stay out of politics, we can't help it if there is occasionally some drama with the countries we serve. Netflix ceased operations in **`r least_weeks$country_name`** in **`r format(least_weeks$week, "%B %d, %Y")`**. But enough about politics. Let's talk about Squid Game! This show has been a phenomenon. We have seen **`r format(squid, big.mark = ",")`** total hours of viewing. Yes, you read that right. **`r format(squid, big.mark = ",")`**.
 
 ```{r}
 #| code-summary: "CODE: Find Red Notice values"
@@ -217,12 +219,23 @@ red_notice_views <- GLOBAL_TOP_10 |>
   mutate(views_2021 = total_hours_viewed/(118/60)) |>
   pull(views_2021)
 
+red_notice_weeks <- GLOBAL_TOP_10 |>
+  select(weekly_rank, week, show_title, cumulative_weeks_in_top_10) |>
+  filter(show_title == 'Red Notice', year(week) == 2021) |>
+  slice_max(cumulative_weeks_in_top_10, n = 1) |>
+  pull(cumulative_weeks_in_top_10)
+
+red_notice_rank <- GLOBAL_TOP_10 |>
+  select(weekly_rank, week, show_title, cumulative_weeks_in_top_10) |>
+  filter(show_title == 'Red Notice', year(week) == 2021) |>
+  slice_min(weekly_rank, n = 1, with_ties = FALSE) |>
+  pull(weekly_rank)
 ```
 
 
 <img src="images/red-notice.jpg" class="img-left" width="150">
 
-I've been focusing on current trends, but looking back a few years can help uncover different trends. Red Notice received **`r format(red_notice_views, big.mark = ",")`** views in 2021. 
+We've been focusing on current trends, but looking back a few years can help uncover different trends. Red Notice received **`r format(red_notice_views, big.mark = ",")`** views in 2021. The film peaked at **\#`r red_notice_rank`** and appeared on the Global Top 10 list for **`r red_notice_weeks`** weeks in a row that year. 
 
 <div class="clear"></div>
 
@@ -301,7 +314,7 @@ stranger_countries <- COUNTRY_TOP_10 |>
 ```
 
 ### Press Release 1: Stranger Things Season 5 is on the way
-I hope you are as excited as I am about the next season of **Stranger Things**, due at the end of the year. Our viewers just can't watch enough. Fans have watched a whopping **`r format(stranger_hours, big.mark = ',')`** total hours and the series has spent **`r stranger_length`** weeks on the Global Top 10 list. Speaking of the global appeal of **Stranger Things**, the show has appeared on the Country Top 10 list for **`r stranger_countries`** countries. 
+Beware of Vecna. We hope you are as excited as we are about the next season of **Stranger Things**, due at the end of the year. Our viewers just can't watch enough. Fans have watched a whopping **`r format(stranger_hours, big.mark = ',')`** total hours and the series has spent **`r stranger_length`** weeks on the Global Top 10 list. Speaking of the global appeal of **Stranger Things**, the show has appeared on the Country Top 10 list for **`r stranger_countries`** countries. If this show was an amp, it would go up to Eleven.
 
 To get a sense for how strong this show has performed, let's look at how **Stranger Things** compares to some of our other very popular series.
 
@@ -331,7 +344,7 @@ GLOBAL_TOP_10 |>
 <br>
 I think you will agree that this has been an epic run. Stay tuned for the 5th and final season!
 
-### Press Release 2: Hindi-language programming is taking off
+### Press Release 2: Namaste, Hindi-language programming
 ```{r}
 #| code-summary: "CODE: India top show"
 one_this_week <- COUNTRY_TOP_10 |>
@@ -385,7 +398,7 @@ one_this_week_korea <- COUNTRY_TOP_10 |>
   slice(1) |>
   pull(show_title)
 ```
-The number one TV show in Korea this week is  **`r one_this_week`**. If we look at the intersection of the top programs in South Korea (that are also popular in the United States), we notice something interesting. About half of the shows are of Korean origin. The remainder are of Japanese and US origin.
+The number one TV show in Korea this week is  **`r one_this_week_korea`**. If we look at the intersection of the top programs in South Korea that are also popular in the United States, we notice something interesting. About half of the shows are of Korean origin. The remainder are of Japanese and US origin.
 
 ```{r}
 #| code-summary: "CODE: Find popular Korean shows"
@@ -419,5 +432,7 @@ kpop_hours <- GLOBAL_TOP_10 |>
   
 
 ```
-While the United States continues to be an exporter of great television, South Korea appears to also be growing as an influential exporter and a cultural force. One popular American show, **KPop Demon Hunters**, is steeped in Korean culture and themes. In addition to trending in Korea, it has trended globally and has garnered `r format(kpop_hours, big.mark = ',')` hours of viewing. We expect this trend to continue. 
+While the United States continues to be an exporter of great television, South Korea appears to also be growing as an influential exporter and a cultural force. One popular American show, **KPop Demon Hunters**, is steeped in Korean culture and themes. In addition to trending in Korea, it has trended globally and has garnered **`r format(kpop_hours, big.mark = ',')`** hours of viewing. We expect this trend to continue. 
+
+We hope you learned from these press releases. Looking for something, well, more official? Visit the [Netflix News Room](https://about.netflix.com/en/newsroom). 
 
