@@ -1,0 +1,535 @@
+---
+title: "Mini-Project 03 - Visualizing and Maintaining the Green Canopy of NYC"
+author: "Jesse Nover"
+editor:
+    mode: source
+format:
+    html:
+        code-fold: true
+        toc: true
+        # toc-title: "On this page"
+        toc-location: right
+        toc-depth: 5
+---
+```{css}
+#| code-summary: "CODE: CSS"
+table.dataTable thead th {
+  font-size: 12px !important;
+}
+table.dataTable tbody td {
+  font-size: 12px !important;
+}
+
+.img-left {
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  max-width: 300px;
+}
+
+.img-right {
+  float: right;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  max-width: 300px;
+}
+
+.clear {
+  clear: both;
+}
+
+.blue-header {
+  color: #0066cc;
+}
+
+```
+
+## Introduction
+
+New York City's trees are an asset that improves the quality of life for all New Yorkers. They provide environmental benefits, such as temperature regulation, pollution absorption, and storm water absorption. They raise property values. They improve human health. And they are part of the city's cultural heritage. Perhaps Central Park or Prospect Park come to mind when thinking about the most beautiful or iconic trees in the city, but a wealth of trees are distributed across the five boroughs.
+
+This mini-project will explore the [NYC TreeMap](https://tree-map.nycgovparks.org/tree-map/learn/about) dataset, to learn about NYC's trees. Additionally, it will include a proposal to focus on improving the condition of trees in a City Council District that is most in need.
+
+## Data Acquisition and Preparation
+
+```{r}
+#| code-summary: "CODE: Download & transform NYC city council district boundaries (Task 1)"
+#| message: false
+#| warning: false
+
+# Task 1
+# 1. create directory if necessary
+if(!dir.exists(file.path("data", "mp03"))){
+  dir.create(file.path("data", "mp03"), showWarnings=FALSE, recursive=TRUE)
+}
+
+# 2. download council districts file if necessary
+NYC_DISTRICTS <- file.path("data", "mp03", "nycc_25.zip")
+
+if(!file.exists(NYC_DISTRICTS)){
+  download.file("https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/city-council/nycc_25c.zip", 
+                destfile=NYC_DISTRICTS)
+}
+
+# 3. Unzip files only if not already unzipped
+NYC_DISTRICTS_DIR <- file.path("data", "mp03", "nycc_25")
+if(!dir.exists(NYC_DISTRICTS_DIR)){
+  unzip(NYC_DISTRICTS, exdir=NYC_DISTRICTS_DIR)
+}
+
+library(sf)
+
+# Read the NYC Council Districts shapefile (without water) and transform
+nycc <- st_read("data/mp03/nycc_25/nycc_25c/nycc.shp", quiet = TRUE)
+nycc <- st_transform(nycc, crs="WGS84")
+```
+Let's take a look at what the New York City council district boundaries data includes.
+```{r}
+#| code-summary: "CODE: Return data (Task 1)"
+
+nycc #tempted to comment this out
+```
+
+
+
+```{r}
+#| code-summary: "CODE: Download tree points (Task 2)"
+#| message: false
+#| warning: false
+ 
+library(httr2)
+library(sf)
+library(dplyr)
+
+download_nyc_geojson <- function(base_url = "https://data.cityofnewyork.us/resource/hn5i-inap.geojson",
+                                 output_dir = "data/mp03",
+                                 limit = 1000,
+                                 max_retries = 3) {
+  
+  # Create output directory if it doesn't exist
+  if(!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE)
+  }
+  
+  # Download each page until we get an empty response
+  all_data <- list()
+  page <- 0
+  
+  repeat {
+    offset <- page * limit
+    filename <- file.path(output_dir, sprintf("nyc_data_page_%04d.geojson", page))
+    
+    # Check if file already exists
+    if(file.exists(filename)) {
+      message(sprintf("Page %d (offset %d): Already downloaded, reading from file", page, offset))
+      page_data <- st_read(filename, quiet = TRUE)
+      
+      # If empty file, we're done
+      if(nrow(page_data) == 0) {
+        message("Reached end of data (empty file found)")
+        break
+      }
+    } else {
+      message(sprintf("Page %d (offset %d): Downloading...", page, offset))
+      
+      # Try downloading with retries
+      success <- FALSE
+      for(attempt in 1:max_retries) {
+        tryCatch({
+          # Build and perform request with longer timeout
+          req <- request(base_url) |>
+            req_url_query(`$limit` = limit, `$offset` = offset) |>
+            req_timeout(900)  # 15 minute timeout
+          
+          resp <- req_perform(req)
+          
+          # Save to file
+          writeBin(resp_body_raw(resp), filename)
+          
+          success <- TRUE
+          break
+        }, error = function(e) {
+          message(sprintf("  Attempt %d failed: %s", attempt, e$message))
+          if(attempt < max_retries) {
+            message(sprintf("  Retrying in 10 seconds..."))
+            Sys.sleep(10)
+          }
+        })
+      }
+      
+      if(!success) {
+        message(sprintf("Failed to download page %d after %d attempts. Stopping.", page, max_retries))
+        break
+      }
+      
+      # Read the data
+      page_data <- st_read(filename, quiet = TRUE)
+      
+      # If no data returned, we're done
+      if(nrow(page_data) == 0) {
+        message("Reached end of data")
+        break
+      }
+      
+      # Small delay to be respectful to the API
+      Sys.sleep(0.5)
+    }
+    
+    # Convert any datetime columns to character for consistent binding
+    page_data <- page_data |>
+      mutate(across(where(~inherits(., "POSIXct") | inherits(., "POSIXt") | inherits(., "Date")), 
+                    as.character))
+    
+    all_data[[page + 1]] <- page_data
+    page <- page + 1
+  }
+  
+  # Combine all data
+  if(length(all_data) > 0) {
+    message("Combining all pages...")
+    combined_data <- bind_rows(all_data)
+    message(sprintf("Download complete. Total rows: %d", nrow(combined_data)))
+    return(combined_data)
+  } else {
+    message("No data downloaded")
+    return(NULL)
+  }
+}
+
+# Usage:
+nyc_data <- download_nyc_geojson()
+```
+
+```{r}
+#| code-summary: "CODE: Extra credit data sets"
+#| message: false
+#| warning: false
+# extra credit data sets
+# risk assessments: https://data.cityofnewyork.us/resource/259a-b6s7.json
+RISK_ASSESSMENTS <- file.path("data", "mp03", "259a-b6s7.json")
+
+if(!file.exists(RISK_ASSESSMENTS)){
+  download.file("https://data.cityofnewyork.us/resource/259a-b6s7.json", 
+                destfile=RISK_ASSESSMENTS)
+}
+
+# Forestry Work Orders: https://data.cityofnewyork.us/resource/bdjm-n7q4.json
+WORK_ORDERS <- file.path("data", "mp03", "bdjm-n7q4.json")
+
+if(!file.exists(WORK_ORDERS)){
+  download.file("https://data.cityofnewyork.us/resource/bdjm-n7q4.json", 
+                destfile=WORK_ORDERS)
+}
+
+library(jsonlite)
+
+# Read Risk Assessments
+risk_assessments <- fromJSON(RISK_ASSESSMENTS)
+
+# Read Work Orders
+work_orders <- fromJSON(WORK_ORDERS)
+
+```
+
+## Visualize All Trees
+```{r}
+#| code-summary: "CODE: Plot all trees (Task 3)"
+
+library(ggplot2)
+
+ggplot() +
+  geom_sf(data = nycc, fill = "grey95", color = "black", linewidth = 0.5) +
+  geom_sf(data = nyc_data, alpha = 0.01, size = 0.05, color = "forestgreen") +
+  theme_minimal()  +
+  labs(title = "NYC Street Trees by Council District",
+       subtitle = "Trees shown as points over council district boundaries")
+
+```
+This plot should give a good birds-eye view of the tree cover in New York City. Note that it doesn't include every tree in NYC, only the street trees and trees in certain parks. You may notice some blank-looking areas that are in fact quite leafy: Central Park, Van Cortlandt Park, and Greenwood Cemetery, among others. 
+
+## District Analysis
+```{r}
+#| code-summary: "CODE: Join tables to answer questions (Task 4)"
+
+# Join trees to districts - each tree gets assigned to its district (option 2)
+trees_with_districts <- st_join(nyc_data, nycc, join = st_intersects)
+
+
+# Drop geometry BEFORE grouping to avoid memory issues
+trees_per_district_no_geometry <- trees_with_districts |>
+  st_drop_geometry()
+
+# 1. Which council district has the most trees?
+most_trees <- trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(number_of_trees = n()) |>
+  slice_max(number_of_trees, n=1)
+
+# 2. Which council district has the highest density of trees? 
+highest_density <- trees_per_district_no_geometry |>
+group_by(CounDist) |>
+  summarize(tree_density = n()/first(Shape_Area)) |>
+  slice_max(tree_density, n=1)
+
+# 3.Which district has highest fraction of dead trees out of all trees?
+highest_dead <- trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(
+    total_trees = n(),
+    dead_trees = sum(tpcondition == "Dead"),
+    dead_tree_ratio = dead_trees / total_trees
+  ) |>
+  slice_max(dead_tree_ratio, n = 1)
+
+# 4.What is the most common tree species in Manhattan?
+
+most_common_tree_manhattan <- trees_per_district_no_geometry |>
+  mutate(borough = case_when(
+    CounDist >= 1 & CounDist <= 10 ~ "Manhattan",
+    CounDist >= 11 & CounDist <= 18 ~ "Bronx",
+    CounDist >= 19 & CounDist <= 32 ~ "Queens",
+    CounDist >= 33 & CounDist <= 48 ~ "Brooklyn",
+    CounDist >= 49 & CounDist <= 51 ~ "Staten Island"
+  )) |>
+  filter(borough == "Manhattan") |>
+  group_by(genusspecies) |>
+  summarize(tree_count = n()) |>
+  slice_max(tree_count, n = 1)
+
+# 5. What is the species of the tree closest to Baruch’s campus?
+baruch_longitude <- -73.98299
+baruch_latitude  <- +40.74033
+
+# Create a point for Baruch College (note: longitude comes first in st_point)
+baruch_point <- st_sfc(st_point(c(baruch_longitude, baruch_latitude))) |>
+  st_set_crs("WGS84")
+
+# Transform to a projected CRS for accurate distance calculation
+baruch_point_projected <- st_transform(baruch_point, crs = 2263)
+nyc_data_projected <- st_transform(nyc_data, crs = 2263)
+
+# Calculate distances and find the closest tree
+
+closest_tree <- nyc_data_projected |>
+  mutate(distance = st_distance(geometry, baruch_point_projected)[,1]) |>
+  slice_min(distance, n = 1) |>
+  select(genusspecies, distance, everything())
+
+
+```
+
+
+###### <span class="blue-header">1. Which council district has the most trees?</span>
+Council district **`r most_trees$CounDist`** has the most trees: **`r format(most_trees$number_of_trees, big.mark = ",")`**.
+
+###### <span class="blue-header">2. Which council district has the highest density of trees?</span>
+Council district **`r highest_density$CounDist`** has the highest density of trees.
+
+###### <span class="blue-header">3. Which district has highest fraction of dead trees out of all trees?</span>
+Council district **`r highest_dead$CounDist`** has the highest dead tree fraction: **`r format(highest_dead$dead_tree_ratio, big.mark = ",")`**.
+
+###### <span class="blue-header">4. What is the most common tree species in Manhattan?</span>
+**`r most_common_tree_manhattan$genusspecies`** is the most common species in the borough.
+
+###### <span class="blue-header">5. What is the species of the tree closest to Baruch’s campus?</span>
+Baruch's closest tree is a **`r closest_tree$genusspecies`**.
+
+## NYC Parks Proposal
+
+Now is the time to devote a special fund to improve the "woodstock" in district 32. My duty as a city councilperson compels me to act as arborist-in-chief of our street trees, and unfortunately, we have a big issue.
+```{r}
+#| code-summary: "CODE: Find districts with tree problems (Task 5)"
+
+# Which district has the fewest trees (lowest desity)
+# Poor, Critical, or Dead
+# Which district has highest challenged trees out of all trees?
+district_analysis <- trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(
+    total_trees = n(),
+    tree_density = total_trees / first(Shape_Area),
+    dead = sum(tpcondition == "Dead", na.rm = TRUE),
+    critical = sum(tpcondition == "Critical", na.rm = TRUE),
+    poor = sum(tpcondition == "Poor", na.rm = TRUE),
+    challenged_trees = dead + critical + poor,
+    challenged_tree_ratio = challenged_trees / total_trees
+  )
+
+    
+district_analysis <- district_analysis |>
+  mutate(borough = case_when(
+    CounDist >= 1 & CounDist <= 10 ~ "Manhattan",
+    CounDist >= 11 & CounDist <= 18 ~ "Bronx",
+    CounDist >= 19 & CounDist <= 32 ~ "Queens",
+    CounDist >= 33 & CounDist <= 48 ~ "Brooklyn",
+    CounDist >= 49 & CounDist <= 51 ~ "Staten Island"
+  )) |>
+  filter(!is.na(tree_density), !is.na(challenged_tree_ratio))  # Add this filter to remove warning
+
+library(ggrepel)
+
+ggplot(district_analysis, aes(x = challenged_tree_ratio, y = tree_density, color = borough)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_text_repel(
+    data = district_analysis |> 
+      filter(!is.na(tree_density), !is.na(challenged_tree_ratio)) |>
+      filter(tree_density < quantile(tree_density, 0.1) | 
+               challenged_tree_ratio > quantile(challenged_tree_ratio, 0.9)),
+    aes(label = CounDist),
+    size = 3,
+    show.legend = FALSE,
+    box.padding = 0.3,      # padding around labels
+    point.padding = 0.2,    # padding around points
+    max.overlaps = 20       # allow more overlaps if needed
+  ) +
+  labs(
+    title = "Tree Density vs. Challenged Tree Ratio by District",
+    x = "Challenged Tree Ratio (Fraction Dead, Critical, or Poor)",
+    y = "Tree Density (trees per unit area)",
+    color = "Borough"
+  ) +
+  theme_minimal()
+```
+Let's look at the condition of the trees in each Council District. To assess the overall situation, the plot above uses a metric called the **Challenged Tree Ratio** to measure the fraction of trees in a district that are either dead or in poor or critical condition. The plot shows the Challenged Tree Ratio on the X-axis and Tree Density on the Y-axis. Districts with a higher ratio of challenged trees and/or a lower density of trees really need more attention, and you can see them in the lower right.
+
+While there are a few other districts that could also use attention, my district, **District 32**, is clearly the **most in need**.
+
+```{r}
+#| code-summary: "CODE: Show district 32 (Task 5)"
+# District 32 highlighted
+ggplot() +
+  # All districts (faded)
+  geom_sf(data = nycc, 
+          fill = "grey95", 
+          color = "grey80", 
+          linewidth = 0.3) +
+  # District 26 highlighted
+  geom_sf(data = nycc |> filter(CounDist == 32), 
+          fill = "grey95", 
+          color = "black", 
+          linewidth = 0.8) +
+  # Trees only in District 32
+  geom_sf(data = trees_with_districts |> filter(CounDist == 32), 
+          alpha = 0.1, 
+          size = 0.1, 
+          color = "forestgreen") +
+  theme_minimal() +
+  labs(title = "NYC Street Trees",
+       subtitle = "City Council District 32")
+```
+As you may know, District 32 is geographically complex, straddling Southeastern Queens, the Western Rockaways, and the islands of Jamaica Bay. We have the charms of the beach, but also the environmental dangers posed by extreme weather and flooding.
+```{r}
+#| code-summary: "CODE: Explore district 32 interactively (Task 5)"
+# Interactive map
+
+# Transform to WGS84 for leaflet
+district_32 <- nycc |> filter(CounDist == 32) |> st_transform(4326)
+trees_32 <- trees_with_districts |> filter(CounDist == 32) |> st_transform(4326)
+
+library(leaflet)
+leaflet() |>
+  addTiles() |>
+  addPolygons(data = district_32, 
+              fillColor = "grey95", 
+              color = "black", 
+              weight = 2,
+              fillOpacity = 0.5) |>
+  addCircleMarkers(data = trees_32,
+                   radius = 2,
+                   color = "forestgreen",
+                   fillOpacity = 0.5,
+                   stroke = FALSE,
+                   popup = ~paste("Species:", genusspecies, "<br>",
+                                  "Condition:", tpcondition))
+
+# district 32 most common tree
+
+most_common_tree_32 <- trees_per_district_no_geometry |>
+  filter(CounDist == 32) |>
+  group_by(genusspecies) |>
+  summarize(tree_count = n()) |>
+  slice_max(tree_count, n = 1)
+```
+Take a closer look. Zoom in and get familiar with the individual trees. In spite of our challenges, we are proud of our trees. The most common species is **`r most_common_tree_32$genusspecies`** which we have **`r format(most_common_tree_32$tree_count, big.mark = ',')`** of.
+
+```{r}
+#| code-summary: "CODE: Get tabular data sorted by Challenged Tree Ratio"
+#| message: false
+#| warning: false
+if(!require("DT")) install.packages("DT")
+library(DT)
+library(stringr)
+
+# improve the appearance of titles in tables
+format_titles <- function(df){
+  colnames(df) <- str_replace_all(colnames(df), "_", " ") |> str_to_title()
+  df
+}
+
+trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(
+    total_trees = n(),
+    tree_density = total_trees / first(Shape_Area),
+    dead = sum(tpcondition == "Dead", na.rm = TRUE),
+    critical = sum(tpcondition == "Critical", na.rm = TRUE),
+    poor = sum(tpcondition == "Poor", na.rm = TRUE),
+    challenged_trees = dead + critical + poor,
+    challenged_tree_ratio = challenged_trees / total_trees
+  ) |>
+  arrange(desc(challenged_tree_ratio)) |>
+  slice_max(challenged_tree_ratio, n=10) |>
+  rename(District = CounDist) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE)
+  ) |>
+  formatRound(c('Tree Density', 'Challenged Tree Ratio'), digits = 6) |>
+  formatCurrency(c('Total Trees', 'Dead', 'Critical', 'Poor', 'Challenged Trees'), 
+                 currency = '', digits = 0, mark = ',')
+
+dist_32_status <- trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(
+    total_trees = n(),
+    tree_density = total_trees / first(Shape_Area),
+    dead = sum(tpcondition == "Dead", na.rm = TRUE),
+    critical = sum(tpcondition == "Critical", na.rm = TRUE),
+    poor = sum(tpcondition == "Poor", na.rm = TRUE),
+    challenged_trees = dead + critical + poor,
+    challenged_tree_ratio = challenged_trees / total_trees
+  ) |>
+  arrange(desc(challenged_tree_ratio)) |>
+  slice_max(challenged_tree_ratio, n=1)
+
+```
+<br>
+To get down to the specific need, you can see that District **`r dist_32_status$CounDist`** has **`r format(dist_32_status$dead, big.mark= ',')`** dead trees, **`r format(dist_32_status$poor, big.mark = ',')`** trees in poor condition, and **`r format(dist_32_status$critical, big.mark = ',')`** in critical condition. We need to commit to replacing all of the dead trees, and assessing the trees in poor or critical condition to determine if they need to be replaced. To estimate the basic need, let's assume that 50% of the trees in poor and critical condition will need to be replaced. Added to the dead trees, this requires **`r format(dist_32_status$dead + ((dist_32_status$poor + dist_32_status$critical)/2), big.mark= ',')`** new plantings.
+
+Additionally, we need to plant new trees beyond replacing the trees in decline. While it may not be realistic for our district to lead the city in tree_density, it is also a policy failing that we are near the bottom of the list. The unique geography of our district makes District **`r dist_32_status$CounDist`** the right area to invest in an additional planting of at least **10,000** trees. That brings the total trees needed to **`r format(10000 + dist_32_status$dead + ((dist_32_status$poor + dist_32_status$critical)/2), big.mark= ',')`**. 
+
+
+```{r}
+#| code-summary: "CODE: Check work orders"
+open_work_orders_32 <- work_orders |>  mutate(citycouncil = as.numeric(citycouncil)) |>
+  filter(citycouncil == 32, wostatus == 'Open') |>
+  summarize(Total_Work_Orders = n())
+```
+
+I know that the parks department works hard to maintain our trees. That said, we need more attention. At present, there are only **`r open_work_orders_32$Total_Work_Orders` Open Work Orders** for trees in our district.
+
+I urge you to make District 32 the priority.
+
+
+
+------------------------------------------------------------------------
+
+This work ©2025 by jesse-nover was initially prepared as a Mini-Project for
+STA 9750 at Baruch College. More details about this course can be found at
+[the course site](https://michael-weylandt.com/STA9750) and instructions for
+this assignment can be found at 
+[MP #03](https://michael-weylandt.com/STA9750/miniprojects/mini03.html)
