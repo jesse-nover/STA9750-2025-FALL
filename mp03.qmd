@@ -10,6 +10,7 @@ format:
         # toc-title: "On this page"
         toc-location: right
         toc-depth: 5
+        self-contained: true
 ---
 ```{css}
 #| code-summary: "CODE: CSS"
@@ -83,13 +84,6 @@ library(sf)
 nycc <- st_read("data/mp03/nycc_25/nycc_25c/nycc.shp", quiet = TRUE)
 nycc <- st_transform(nycc, crs="WGS84")
 ```
-Let's take a look at what the New York City council district boundaries data includes.
-```{r}
-#| code-summary: "CODE: Return data (Task 1)"
-
-nycc #tempted to comment this out
-```
-
 
 
 ```{r}
@@ -242,7 +236,11 @@ ggplot() +
   geom_sf(data = nyc_data, alpha = 0.01, size = 0.05, color = "forestgreen") +
   theme_minimal()  +
   labs(title = "NYC Street Trees by Council District",
-       subtitle = "Trees shown as points over council district boundaries")
+       subtitle = "Trees shown as points over council district boundaries") +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
 
 ```
 This plot should give a good birds-eye view of the tree cover in New York City. Note that it doesn't include every tree in NYC, only the street trees and trees in certain parks. You may notice some blank-looking areas that are in fact quite leafy: Central Park, Van Cortlandt Park, and Greenwood Cemetery, among others. 
@@ -388,7 +386,10 @@ ggplot(district_analysis, aes(x = challenged_tree_ratio, y = tree_density, color
     y = "Tree Density (trees per unit area)",
     color = "Borough"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
 ```
 Let's look at the condition of the trees in each Council District. To assess the overall situation, the plot above uses a metric called the **Challenged Tree Ratio** to measure the fraction of trees in a district that are either dead or in poor or critical condition. The plot shows the Challenged Tree Ratio on the X-axis and Tree Density on the Y-axis. Districts with a higher ratio of challenged trees and/or a lower density of trees really need more attention, and you can see them in the lower right.
 
@@ -415,11 +416,24 @@ ggplot() +
           color = "forestgreen") +
   theme_minimal() +
   labs(title = "NYC Street Trees",
-       subtitle = "City Council District 32")
+       subtitle = "City Council District 32") +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
 ```
 As you may know, District 32 is geographically complex, straddling Southeastern Queens, the Western Rockaways, and the islands of Jamaica Bay. We have the charms of the beach, but also the environmental dangers posed by extreme weather and flooding.
 ```{r}
 #| code-summary: "CODE: Explore district 32 interactively (Task 5)"
+
+# district 32 most common tree
+
+most_common_tree_32 <- trees_per_district_no_geometry |>
+  filter(CounDist == 32) |>
+  group_by(genusspecies) |>
+  summarize(tree_count = n()) |>
+  slice_max(tree_count, n = 1)
+
 # Interactive map
 
 # Transform to WGS84 for leaflet
@@ -442,20 +456,32 @@ leaflet() |>
                    popup = ~paste("Species:", genusspecies, "<br>",
                                   "Condition:", tpcondition))
 
-# district 32 most common tree
 
-most_common_tree_32 <- trees_per_district_no_geometry |>
-  filter(CounDist == 32) |>
-  group_by(genusspecies) |>
-  summarize(tree_count = n()) |>
-  slice_max(tree_count, n = 1)
 ```
+<br>
 Take a closer look. Zoom in and get familiar with the individual trees. In spite of our challenges, we are proud of our trees. The most common species is **`r most_common_tree_32$genusspecies`** which we have **`r format(most_common_tree_32$tree_count, big.mark = ',')`** of.
 
 ```{r}
 #| code-summary: "CODE: Get tabular data sorted by Challenged Tree Ratio"
 #| message: false
 #| warning: false
+
+#store data from first row
+dist_32_status <- trees_per_district_no_geometry |>
+  group_by(CounDist) |>
+  summarize(
+    total_trees = n(),
+    tree_density = total_trees / first(Shape_Area),
+    dead = sum(tpcondition == "Dead", na.rm = TRUE),
+    critical = sum(tpcondition == "Critical", na.rm = TRUE),
+    poor = sum(tpcondition == "Poor", na.rm = TRUE),
+    challenged_trees = dead + critical + poor,
+    challenged_tree_ratio = challenged_trees / total_trees
+  ) |>
+  arrange(desc(challenged_tree_ratio)) |>
+  slice_max(challenged_tree_ratio, n=1)
+
+
 if(!require("DT")) install.packages("DT")
 library(DT)
 library(stringr)
@@ -492,19 +518,7 @@ trees_per_district_no_geometry |>
   formatCurrency(c('Total Trees', 'Dead', 'Critical', 'Poor', 'Challenged Trees'), 
                  currency = '', digits = 0, mark = ',')
 
-dist_32_status <- trees_per_district_no_geometry |>
-  group_by(CounDist) |>
-  summarize(
-    total_trees = n(),
-    tree_density = total_trees / first(Shape_Area),
-    dead = sum(tpcondition == "Dead", na.rm = TRUE),
-    critical = sum(tpcondition == "Critical", na.rm = TRUE),
-    poor = sum(tpcondition == "Poor", na.rm = TRUE),
-    challenged_trees = dead + critical + poor,
-    challenged_tree_ratio = challenged_trees / total_trees
-  ) |>
-  arrange(desc(challenged_tree_ratio)) |>
-  slice_max(challenged_tree_ratio, n=1)
+
 
 ```
 <br>
