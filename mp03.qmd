@@ -341,19 +341,31 @@ Now is the time to devote a special fund to improve the "woodstock" in district 
 # Which district has the fewest trees (lowest desity)
 # Poor, Critical, or Dead
 # Which district has highest challenged trees out of all trees?
+
+# get square miles for density
+# Calculate proper areas in State Plane (square feet)
+nycc_projected <- st_transform(nycc, crs = 2263)
+district_areas <- nycc_projected |>
+  st_drop_geometry() |>
+  select(CounDist, Shape_Area)
+
+# Now join the areas to density calculations
 district_analysis <- trees_per_district_no_geometry |>
   group_by(CounDist) |>
   summarize(
     total_trees = n(),
-    tree_density = total_trees / first(Shape_Area),
     dead = sum(tpcondition == "Dead", na.rm = TRUE),
     critical = sum(tpcondition == "Critical", na.rm = TRUE),
     poor = sum(tpcondition == "Poor", na.rm = TRUE),
     challenged_trees = dead + critical + poor,
     challenged_tree_ratio = challenged_trees / total_trees
+  ) |>
+  left_join(district_areas, by = "CounDist") |>
+  mutate(
+    area_sq_miles = Shape_Area / 27878400,  # Convert sq feet to sq miles
+    tree_density = total_trees / area_sq_miles
   )
 
-    
 district_analysis <- district_analysis |>
   mutate(borough = case_when(
     CounDist >= 1 & CounDist <= 10 ~ "Manhattan",
@@ -362,9 +374,12 @@ district_analysis <- district_analysis |>
     CounDist >= 33 & CounDist <= 48 ~ "Brooklyn",
     CounDist >= 49 & CounDist <= 51 ~ "Staten Island"
   )) |>
-  filter(!is.na(tree_density), !is.na(challenged_tree_ratio))  # Add this filter to remove warning
+  filter(!is.na(tree_density), !is.na(challenged_tree_ratio))  # Add filter to remove warning
+
+
 
 library(ggrepel)
+library(scales)
 
 ggplot(district_analysis, aes(x = challenged_tree_ratio, y = tree_density, color = borough)) +
   geom_point(size = 3, alpha = 0.7) +
@@ -376,14 +391,16 @@ ggplot(district_analysis, aes(x = challenged_tree_ratio, y = tree_density, color
     aes(label = CounDist),
     size = 3,
     show.legend = FALSE,
-    box.padding = 0.3,      # padding around labels
-    point.padding = 0.2,    # padding around points
-    max.overlaps = 20       # allow more overlaps if needed
+    box.padding = 0.3,
+    point.padding = 0.2,
+    max.overlaps = 20
   ) +
+  scale_x_continuous(labels = percent_format()) +
+  scale_y_continuous(labels = comma_format()) +
   labs(
     title = "Tree Density vs. Challenged Tree Ratio by District",
     x = "Challenged Tree Ratio (Fraction Dead, Critical, or Poor)",
-    y = "Tree Density (trees per unit area)",
+    y = "Tree Density (trees per sq. mile)",
     color = "Borough"
   ) +
   theme_minimal() +
@@ -492,17 +509,10 @@ format_titles <- function(df){
   df
 }
 
-trees_per_district_no_geometry |>
-  group_by(CounDist) |>
-  summarize(
-    total_trees = n(),
-    tree_density = total_trees / first(Shape_Area),
-    dead = sum(tpcondition == "Dead", na.rm = TRUE),
-    critical = sum(tpcondition == "Critical", na.rm = TRUE),
-    poor = sum(tpcondition == "Poor", na.rm = TRUE),
-    challenged_trees = dead + critical + poor,
-    challenged_tree_ratio = challenged_trees / total_trees
-  ) |>
+# table
+district_analysis   |>
+  rename(trees_per_sq_mile = tree_density) |>
+  select(borough, CounDist, total_trees, trees_per_sq_mile, dead, critical, poor, challenged_trees, challenged_tree_ratio) |>
   arrange(desc(challenged_tree_ratio)) |>
   slice_max(challenged_tree_ratio, n=10) |>
   rename(District = CounDist) |>
@@ -514,17 +524,16 @@ trees_per_district_no_geometry |>
       info = FALSE,
       ordering = FALSE)
   ) |>
-  formatRound(c('Tree Density', 'Challenged Tree Ratio'), digits = 6) |>
+  formatRound(c('Trees Per Sq Mile'), digits = 0, mark=',') |>
+  formatPercentage(c('Challenged Tree Ratio'), digits = 1) |>
   formatCurrency(c('Total Trees', 'Dead', 'Critical', 'Poor', 'Challenged Trees'), 
                  currency = '', digits = 0, mark = ',')
-
-
 
 ```
 <br>
 To get down to the specific need, you can see that District **`r dist_32_status$CounDist`** has **`r format(dist_32_status$dead, big.mark= ',')`** dead trees, **`r format(dist_32_status$poor, big.mark = ',')`** trees in poor condition, and **`r format(dist_32_status$critical, big.mark = ',')`** in critical condition. We need to commit to replacing all of the dead trees, and assessing the trees in poor or critical condition to determine if they need to be replaced. To estimate the basic need, let's assume that 50% of the trees in poor and critical condition will need to be replaced. Added to the dead trees, this requires **`r format(dist_32_status$dead + ((dist_32_status$poor + dist_32_status$critical)/2), big.mark= ',')`** new plantings.
 
-Additionally, we need to plant new trees beyond replacing the trees in decline. While it may not be realistic for our district to lead the city in tree_density, it is also a policy failing that we are near the bottom of the list. The unique geography of our district makes District **`r dist_32_status$CounDist`** the right area to invest in an additional planting of at least **10,000** trees. That brings the total trees needed to **`r format(10000 + dist_32_status$dead + ((dist_32_status$poor + dist_32_status$critical)/2), big.mark= ',')`**. 
+Additionally, we need to plant new trees beyond replacing the trees in decline. While it may not be realistic for our district to lead the city in tree density, it is also a policy failing that we are near the bottom of the list. The unique geography of our district makes District **`r dist_32_status$CounDist`** the right area to invest in an additional planting of at least **10,000** trees. That brings the total trees needed to **`r format(10000 + dist_32_status$dead + ((dist_32_status$poor + dist_32_status$critical)/2), big.mark= ',')`**. 
 
 
 ```{r}
