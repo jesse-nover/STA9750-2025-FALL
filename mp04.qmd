@@ -231,14 +231,6 @@ scrape_revision_year <- function(year, page_html = revision_html_body) {
   return(processed)
 }
 
-# Test the function
-# test_2024 <- scrape_revision_year(2024)
-# print(test_2024)
-
-# Test the function
-# test_2020 <- scrape_revision_year(2020)
-# print(test_2020)
-
 # STEP 3: Apply to all years (1979-2025)
 # =======================================
 
@@ -351,7 +343,7 @@ Mean Monthly Change: **`r scales::comma(mean_change)`** <br>
 Mean Monthly Percent Change: **`r round(mean_percent_change, 2)`%**
 
 
-While the bigger picture story of job growth and loss is interesting, this project is especially focused on the revisions to month-to-month changes that are reported. Each month, the change from the previous month is reported, and this figure is revised about a month later and a final revision is made about two months later. Of special interest is the final revision, and the magnitude of the change from the first number reported. 
+While the bigger picture story of job growth and loss comes across in the long-term data, more subtle signals can be detected through the revisions to the monthly changes that are reported. Each month, the change from the previous month is released. This figure is revised about a month later. A final revision is made two months later. Of special interest is the final revision, and the magnitude of the change from the original number. 
 
 Mean Monthly Final Revision: **`r scales::comma(mean_revision)`**
 
@@ -1057,7 +1049,22 @@ CES |>
   formatRound(c('Mom Percent Change'), digits = 4) 
 
 ```
-The 73,000 figure referred to July (shown as 73 in the Original column and revised down by 1,000 and showing in the final column as 72). The value is lower than the first 4 months of the year, but is higher than the two previous months. The Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is **FALSE**.
+The 73,000 figure referred to July (shown as 73 in the Original column and revised down by 1,000 and showing in the final column as 72). The value is lower than the first 4 months of the year, but turned out to be higher than the two previous months since they were revised lower. Let's do one more statistical test to see whether 73,000 is significantly different statistically from the mean.
+
+**H~0~: The average monthly change - 73,000 = 0**
+
+**H~a~: The average monthly change - 73,000 ≠ 0**
+
+```{r}
+#| code-summary: "CODE: Statistical test 5"
+#| message: false
+#| warning: false
+library(infer)
+
+t_test(monthly_changes, response = mom_change, mu = 73)
+```
+
+Because we see that the P-value is greater than .05, we fail to reject the null hypothesis. Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is **FALSE**.
 
 ![](https://static.politifact.com/politifact/rulings/meter-false.jpg){width=30%}
 
