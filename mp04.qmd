@@ -10,7 +10,7 @@ format:
         # toc-title: "On this page"
         toc-location: right
         toc-depth: 5
-        # self-contained: true
+        self-contained: true
 ---
 ```{css}
 #| code-summary: "CODE: CSS"
@@ -1129,7 +1129,32 @@ For example, instead of relying on established assumptions about, say, the outco
 
 The play (and film) [Rosencranz & Guildenstern are Dead](https://daily.jstor.org/statistics-of-coin-tosses-theater-geeks/) riffs on the idea of randomness and coin tosses, but this is decidedly not a computationally-intensive apprach. ![](https://daily.jstor.org/wp-content/uploads/2017/04/quarters_heads_1050x700.jpg)
 
+### How to use Computationally-Intensive Inference
 
+```{mermaid}
+flowchart LR
+  A[Your observed data] --> B(simulated dataset)
+  A[Your observed data] --> C(simulated dataset)
+  A[Your observed data] --> D(simulated dataset)
+  A[Your observed data] --> E((etc.))
+  B --> F[simulated results histogram marked with actual observation]
+  C --> F[simulated results histogram marked with actual observation]
+  D --> F[simulated results histogram marked with actual observation]
+  E --> F[simulated results histogram marked with actual observation]
+```
+
+This is a high-level process flow to illustrate Computationally-Intensive Inference. An example of the output histogram from earlier on the page is re-displayed here below.
+
+```{r}
+#| code-summary: "CODE: Computationally-intensive inference"
+#| message: false
+#| warning: false
+null_dist_1_sample |>
+  visualize() +
+  shade_p_value(observed_statistic,
+                direction = "two-sided"
+  )
+```
 ------------------------------------------------------------------------
 
 This work ©2025 by jesse-nover was initially prepared as a Mini-Project for
