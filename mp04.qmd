@@ -609,7 +609,7 @@ Now that we are familiar with the CES data, let's do some formal statistical inf
 
 **H~0~: The average revision = 0**
 
-**H~a~: The average revision !=0**
+**H~a~: The average revision ≠ 0**
 
 ```{r}
 #| code-summary: "CODE: Statistical test 1"
@@ -651,9 +651,9 @@ We find that the mean revision in our data (in thousands) is **`r round(observed
 
 Another thing we can look at is whether the mean revision post-COVID (2023-2025) is significantly different than pre-COVID (1979-2019).
 
-**H~0~: The average revision post-COVID - the average revision pre-COVID  = 0**
+**H~0~: The average revision post-COVID - the average revision pre-COVID = 0**
 
-**H~a~: The average revision post-COVID - the average revision pre-COVID !=0**
+**H~a~: The average revision post-COVID - the average revision pre-COVID ≠ 0**
 
 ```{r}
 #| code-summary: "CODE: Statistical test 2"
@@ -676,13 +676,13 @@ CES2 %>%
     order = c("post", "pre")  # post minus pre
   )
 ```
-Though the period following COVID does not provide us with as many months of data to look at as before, we do have over 30 months to work with. As we can see, there does seem to be a statistically significant difference between the periods: revisions have been lower. We can reject the null hypothesis.
+Though the period following COVID does not provide us with as many months of data to look at as before, we do have over 30 months to work with. As we can see, there does seem to be a statistically significant difference between the periods: revisions post-COVID have been lower. We can reject the null hypothesis.
 
 We might also want to test the magnitude or absolute value of the difference.
 
 **H~0~: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID  = 0**
 
-**H~a~: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID !=0**
+**H~a~: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID ≠ 0**
 ```{r}
 #| code-summary: "CODE: Statistical test 3"
 #| message: false
@@ -711,7 +711,7 @@ Finally, let's examine whether there is a difference in how the data is reported
 
 **H~0~: The average revision during Democratic administrations - The average revision during Repulican administrations  = 0**
 
-**H~a~: The average revision during Democratic administrations - The average revision during Repulican administrations !=0**
+**H~a~: The average revision during Democratic administrations - The average revision during Repulican administrations ≠ 0**
 
 We can exammine the data for each party.
 ```{r}
@@ -756,10 +756,6 @@ assign_president <- function(data) {
     )
 }
 
-
-#ces_data <- CES |>
-#  mutate(Date = ymd(Date))
-
 # Add president and party info
 analyze_revisions <- function(ces_data) {
   ces_data |>
@@ -789,9 +785,6 @@ summarize_by_party <- function(analysis_data) {
     ) |>
     arrange(party) 
 }
-
-
-
 
 # Summary by president
 summarize_by_president <- function(analysis_data) {
@@ -830,7 +823,6 @@ plot_revisions_by_party <- function(analysis_data) {
       ) +
     theme(legend.position = "none")
 }
-
 
 # Time series plot
 plot_revisions_timeline <- function(analysis_data) {
@@ -931,7 +923,6 @@ analysis |>
   ) |>
   formatRound(c('Total Revision'), digits = 0, mark=',') |>
   formatRound(c('Mean Revision', 'Median Revision', 'Sd Revision', 'Pct Positive', 'Mean Abs Revision'), digits = 1, mark=',') 
-
 ```
 
 ```{r}
@@ -973,12 +964,10 @@ analysis |>
 #| warning: false
 
 test_party_differences(analysis)
-
-
 ```
 As we can see, there does appear to be a statistically significant difference between the Democratic mean and the Republican mean.
 
-## Task 5
+## Fact Checks of Claims (Task 5)
 Let's look at some of the claims that have been made regarding BLS statistics and try to see if there is a statistical basis for them. We will examine two claims, and decide whether they are true, using the [Politifact](https://www.politifact.com/) scale:
 
 * **TRUE** – The statement is accurate and there’s nothing significant missing.
@@ -1041,18 +1030,64 @@ ggplot(monthly_changes, aes(x = mom_change)) +
     plot.subtitle = element_text(hjust = 0.5)
   )
 ```
-As you can see, 73,000 is a fairly typical value. So Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is **FALSE**.
+As you can see, 73,000 is a fairly typical value. We can also look at it in the context of the previous months in 2025.
 
-![](https://static.politifact.com/politifact/rulings/meter-false.jpg){width="50%"}
+```{r}
+#| code-summary: "CODE: Recent month over month change"
+#| message: false
+#| warning: false
 
-In fairness, the number may have been considered shocking due to the size of the revision rather than the value itself.
+# show recent change
+CES |> 
+  mutate(
+    prev_Value = lag(Value), # Get the previous month's mean
+    mom_change = Value - prev_Value, # Absolute change
+    mom_percent_change = (Value - prev_Value) / prev_Value * 100 # Percentage change
+  ) |> filter(year(Date) == 2025, month(Date) <= 7) |>
+  select(Date, original, mom_change, mom_percent_change) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+    caption = 'Month-over-month change in thousands and %',
+  ) |>
+  formatRound(c('Mom Percent Change'), digits = 4) 
+
+```
+The 73,000 figure referred to July (shown as 73 in the Original column and revised down by 1,000 and showing in the final column as 72). The value is lower than the first 4 months of the year, but is higher than the two previous months. The Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is **FALSE**.
+
+![](https://static.politifact.com/politifact/rulings/meter-false.jpg){width=30%}
 
 **Claim:**
 
 > "The recent downward revisions constitute hard evidence of statistical tampering... Look, the fact is that when the data are unreliable, when they keep being revised all over the place, then there are going to be people that wonder if there's a partisan pattern in the data"
 - Kevin Haskell
 
-If we consider these two statements from National Economic Council Director Kevin Haskell, we might be inclined to see them as contradictory. Do we have "hard evidence" or just "people that wonder"? Statistical tampering may be difficult to prove, but we can refer back to our analysis to examine whether there is an actual partisan pattern. 
+This statement from National Economic Council Director Kevin Haskell came in response to downward revisions in May and June.
+```{R}
+#| code-summary: "CODE: Recent revisions"
+#| message: false
+#| warning: false
+# show recent revisions
+CES %>%
+  filter(year(Date) == 2025, month(Date) <= 7) %>%
+  select(-Is_Preliminary) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+    caption = 'Monthly change and revisions',
+  ) |>
+  formatRound(c('Value'), digits = 0, mark = ',') 
+```
+
+We see that there have been negative revisions for those months and really all of the months of 2025 before his statement. How can we evaluate this statement? We might be inclined to see the second part as contradicting the first part. Do we have "hard evidence" or just "people that wonder"? Statistical tampering may be difficult to prove, but we can refer back to our analysis to examine whether there is an actual partisan pattern. 
 
 As we saw, there does appear to be a statistically significant difference between the Democratic mean and the Republican mean. Let's visualize this.
 ```{r}
@@ -1078,7 +1113,15 @@ plot_by_president(analysis)
 
 So technically there is a "partisan pattern," but we do not know why. Tampering is a theory. Another theory could be differences in policies or the economic cycle. Still another could be the declining participation in the BLS surveys recently. To be generous, let's call this **HALF TRUE**.
 
-![](https://static.politifact.com/politifact/rulings/meter-half-true.jpg){width="50%"}
+![](https://static.politifact.com/politifact/rulings/meter-half-true.jpg){width=30%}
+
+## About Computationally-Intensive Inference
+Using statistical tests traditionally relies on long-established formulae and assumptions about the distribution of data in a population and/or a set of samples. Statistics as a field pre-dates computers. Computationally-intensive inference makes possible a kind of statistical experimentation by simulating thousands or even millions of scenarios based on an existing set of data, a defined set of possible values, or random values.
+
+For example, instead of relying on established assumptions about, say, the outcome of 100 coin tosses and how likely it would be to see certain combinations of heads and tail, we can have the computer simulate the coin tosses 1,000 times (so 100 * 1,000 coin tosses). Of course coins could have been tossed repeatedly before the computer age, but computers make this type of experiment vastly faster and easier. However, it is "computationally-intensive," meaning it requires more computing power than simply applying a traditional formula.
+
+The play (and film) [Rosencranz & Guildenstern are Dead](https://daily.jstor.org/statistics-of-coin-tosses-theater-geeks/) riffs on the idea of randomness and coin tosses, but this is decidedly not a computationally-intensive apprach. ![](https://daily.jstor.org/wp-content/uploads/2017/04/quarters_heads_1050x700.jpg)
+
 
 ------------------------------------------------------------------------
 

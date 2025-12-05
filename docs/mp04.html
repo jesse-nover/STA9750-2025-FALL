@@ -149,7 +149,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-acquisition-and-preparation" id="toc-data-acquisition-and-preparation" class="nav-link" data-scroll-target="#data-acquisition-and-preparation">Data Acquisition and Preparation</a></li>
   <li><a href="#exploratory-analysis-task-3" id="toc-exploratory-analysis-task-3" class="nav-link" data-scroll-target="#exploratory-analysis-task-3">Exploratory Analysis (Task 3)</a></li>
   <li><a href="#statistical-analysis-task-4" id="toc-statistical-analysis-task-4" class="nav-link" data-scroll-target="#statistical-analysis-task-4">Statistical Analysis (Task 4)</a></li>
-  <li><a href="#task-5" id="toc-task-5" class="nav-link" data-scroll-target="#task-5">Task 5</a></li>
+  <li><a href="#fact-checks-of-claims-task-5" id="toc-fact-checks-of-claims-task-5" class="nav-link" data-scroll-target="#fact-checks-of-claims-task-5">Fact Checks of Claims (Task 5)</a></li>
+  <li><a href="#about-computationally-intensive-inference" id="toc-about-computationally-intensive-inference" class="nav-link" data-scroll-target="#about-computationally-intensive-inference">About Computationally-Intensive Inference</a></li>
   </ul>
 </nav>
     </div>
@@ -589,8 +590,8 @@ table.dataTable tbody td {
 <span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="fu">c</span>(<span class="st">'Revision Pct Employment'</span>), <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-bfe35ba58444d5aef8bd" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-bfe35ba58444d5aef8bd">{"x":{"filter":"none","vertical":false,"caption":"<caption>Values in thousands<\/caption>","data":[["1","2","3","4","5"],["2021-11-01","2021-12-01","1983-09-01","1981-04-01","1980-04-01"],[149206,149781,91247,91283,90849],[437,389,383,331,286],[0.2928836641958098,0.259712513603194,0.4197398270628075,0.3626085908657691,0.3148080881462647]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Value<\/th>\n      <th>Revision<\/th>\n      <th>Revision Pct Employment<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Value","targets":2},{"name":"Revision","targets":3},{"name":"Revision Pct Employment","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-63f3fa542b6823b92142" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-63f3fa542b6823b92142">{"x":{"filter":"none","vertical":false,"caption":"<caption>Values in thousands<\/caption>","data":[["1","2","3","4","5"],["2021-11-01","2021-12-01","1983-09-01","1981-04-01","1980-04-01"],[149206,149781,91247,91283,90849],[437,389,383,331,286],[0.2928836641958098,0.259712513603194,0.4197398270628075,0.3626085908657691,0.3148080881462647]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Value<\/th>\n      <th>Revision<\/th>\n      <th>Revision Pct Employment<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Value","targets":2},{"name":"Revision","targets":3},{"name":"Revision Pct Employment","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br> As you can see, the largest positive revision was <strong>437</strong> reported for <strong>2021-11-01</strong>. This represents a percentage change of <strong>0.293%</strong>. The largest postive revision by percent was <strong>0.42%</strong> reported for <strong>1983-09-01</strong>.</p>
@@ -627,8 +628,8 @@ table.dataTable tbody td {
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatPercentage</span>(<span class="fu">c</span>(<span class="st">'Revision Pct Employment'</span>), <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-5a30021ae45649fd3417" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-5a30021ae45649fd3417">{"x":{"filter":"none","vertical":false,"caption":"<caption>Values in thousands<\/caption>","data":[["1","2","3","4","5"],["2020-03-01","1980-05-01","1982-07-01","2020-04-01","2008-09-01"],[150895,90420,89521,130424,136762],[-672,-303,-287,-250,-244],[-0.4453427880314126,-0.3351028533510285,-0.3205951676143028,-0.1916825124210268,-0.1784121320249777]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Value<\/th>\n      <th>Revision<\/th>\n      <th>Revision Pct Employment<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Value","targets":2},{"name":"Revision","targets":3},{"name":"Revision Pct Employment","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-b948ec652c64fc5a8f3b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b948ec652c64fc5a8f3b">{"x":{"filter":"none","vertical":false,"caption":"<caption>Values in thousands<\/caption>","data":[["1","2","3","4","5"],["2020-03-01","1980-05-01","1982-07-01","2020-04-01","2008-09-01"],[150895,90420,89521,130424,136762],[-672,-303,-287,-250,-244],[-0.4453427880314126,-0.3351028533510285,-0.3205951676143028,-0.1916825124210268,-0.1784121320249777]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Value<\/th>\n      <th>Revision<\/th>\n      <th>Revision Pct Employment<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatPercentage(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Value","targets":2},{"name":"Revision","targets":3},{"name":"Revision Pct Employment","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br> The largest negative revision was <strong>-672</strong> reported for <strong>2020-03-01</strong>. This represents a percentage change of <strong>-0.445%</strong>. The largest negative revision by percent was <strong>-0.445%</strong> reported for <strong>2020-03-01</strong>.</p>
@@ -820,7 +821,7 @@ table.dataTable tbody td {
 <h2 class="anchored" data-anchor-id="statistical-analysis-task-4">Statistical Analysis (Task 4)</h2>
 <p>Now that we are familiar with the CES data, let’s do some formal statistical inference to determine whether the recent revisions that have been in the news look like anything other than variance that this dataset has exhibited historically. To start with, let’s concoct a hypothesis.</p>
 <p><strong>H<sub>0</sub>: The average revision = 0</strong></p>
-<p><strong>H<sub>a</sub>: The average revision !=0</strong></p>
+<p><strong>H<sub>a</sub>: The average revision ≠ 0</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>CODE: Statistical test 1</summary>
@@ -867,7 +868,7 @@ table.dataTable tbody td {
 <p>We find that the mean revision in our data (in thousands) is <strong>11.17</strong>. The visualization shows how the mean revision from our historical data compares to a simulated, bootstrapped distribution assuming that the mean was 0. We can do a t test and check the p_value: <strong>0.0016</strong>. We can reject the null hypothesis. We can be 95% confident that the true mean revision is between <strong>4.26</strong> and <strong>18.08</strong> and not 0.</p>
 <p>Another thing we can look at is whether the mean revision post-COVID (2023-2025) is significantly different than pre-COVID (1979-2019).</p>
 <p><strong>H<sub>0</sub>: The average revision post-COVID - the average revision pre-COVID = 0</strong></p>
-<p><strong>H<sub>a</sub>: The average revision post-COVID - the average revision pre-COVID !=0</strong></p>
+<p><strong>H<sub>a</sub>: The average revision post-COVID - the average revision pre-COVID ≠ 0</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>CODE: Statistical test 2</summary>
@@ -894,10 +895,10 @@ table.dataTable tbody td {
 1     -4.55  36.6 0.0000580 two.sided      -47.8    -69.1    -26.5</code></pre>
 </div>
 </div>
-<p>Though the period following COVID does not provide us with as many months of data to look at as before, we do have over 30 months to work with. As we can see, there does seem to be a statistically significant difference between the periods: revisions have been lower. We can reject the null hypothesis.</p>
+<p>Though the period following COVID does not provide us with as many months of data to look at as before, we do have over 30 months to work with. As we can see, there does seem to be a statistically significant difference between the periods: revisions post-COVID have been lower. We can reject the null hypothesis.</p>
 <p>We might also want to test the magnitude or absolute value of the difference.</p>
 <p><strong>H<sub>0</sub>: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID = 0</strong></p>
-<p><strong>H<sub>a</sub>: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID !=0</strong></p>
+<p><strong>H<sub>a</sub>: The average absolute value of revisions post-COVID - the average absolute value of revisions pre-COVID ≠ 0</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>CODE: Statistical test 3</summary>
@@ -928,7 +929,7 @@ table.dataTable tbody td {
 <p>This time we are not seeing a statistically significant difference. The magnitude of revisions has not significantly changed between the pre and post-COVID period. We fail to reject the null hypothesis.</p>
 <p>Finally, let’s examine whether there is a difference in how the data is reported during Democratic and Republican Administrations.</p>
 <p><strong>H<sub>0</sub>: The average revision during Democratic administrations - The average revision during Repulican administrations = 0</strong></p>
-<p><strong>H<sub>a</sub>: The average revision during Democratic administrations - The average revision during Repulican administrations !=0</strong></p>
+<p><strong>H<sub>a</sub>: The average revision during Democratic administrations - The average revision during Repulican administrations ≠ 0</strong></p>
 <p>We can exammine the data for each party.</p>
 <div class="cell">
 <details class="code-fold">
@@ -968,185 +969,177 @@ table.dataTable tbody td {
 <span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co">#ces_data &lt;- CES |&gt;</span></span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(Date = ymd(Date))</span></span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Add president and party info</span></span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>analyze_revisions <span class="ot">&lt;-</span> <span class="cf">function</span>(ces_data) {</span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  ces_data <span class="sc">|&gt;</span></span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assign_president</span>() <span class="sc">|&gt;</span></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Is_Preliminary) <span class="sc">|&gt;</span>  <span class="co"># Only use final data</span></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">revision_pct =</span> (revision <span class="sc">/</span> original) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> <span class="fu">year</span>(Date),</span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">month =</span> <span class="fu">month</span>(Date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics by party</span></span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>summarize_by_party <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="sc">|&gt;</span></span>
-<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(party) <span class="sc">|&gt;</span></span>
-<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
-<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
-<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_abs_revision =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(revision), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(party) </span>
-<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary by president</span></span>
-<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>summarize_by_president <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="sc">|&gt;</span></span>
-<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(president, party) <span class="sc">|&gt;</span></span>
-<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
-<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
-<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>      <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>      <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(party, president)</span>
-<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization: Revisions by party</span></span>
-<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>plot_revisions_by_party <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(analysis_data, <span class="fu">aes</span>(<span class="at">x =</span> party, <span class="at">y =</span> revision, <span class="at">fill =</span> party)) <span class="sc">+</span></span>
-<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
-<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
-<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"CES Jobs Revisions by Presidential Party"</span>,</span>
-<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Initial estimate minus final estimate"</span>,</span>
-<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Party"</span>,</span>
-<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Revision (thousands of jobs)"</span>,</span>
-<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Negative values = initial estimate was too high"</span></span>
-<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
-<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a><span class="co"># Time series plot</span></span>
-<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a>plot_revisions_timeline <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(analysis_data, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> revision, <span class="at">color =</span> party)) <span class="sc">+</span></span>
-<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
-<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
-<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"CES Jobs Revisions Over Time"</span>,</span>
-<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Date"</span>,</span>
-<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Revision (thousands of jobs)"</span>,</span>
-<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"Party"</span></span>
-<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
-<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar chart by president</span></span>
-<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a>plot_by_president <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a>  president_avgs <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span></span>
-<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(president, party) <span class="sc">|&gt;</span></span>
-<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">president =</span> <span class="fu">fct_reorder</span>(president, mean_revision))</span>
-<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(president_avgs, <span class="fu">aes</span>(<span class="at">x =</span> president, <span class="at">y =</span> mean_revision, <span class="at">fill =</span> party)) <span class="sc">+</span></span>
-<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
-<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
-<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Average CES Jobs Revision by President"</span>,</span>
-<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Mean Revision (thousands of jobs)"</span>,</span>
-<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Party"</span></span>
-<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
-<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistical tests</span></span>
-<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>test_party_differences <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
-<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>  dem_revisions <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span> </span>
-<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(party <span class="sc">==</span> <span class="st">"Democratic"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(revision)</span>
-<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a>  rep_revisions <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span> </span>
-<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(party <span class="sc">==</span> <span class="st">"Republican"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(revision)</span>
-<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>  t_test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(dem_revisions, rep_revisions)</span>
-<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>  wilcox_test <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(dem_revisions, rep_revisions)</span>
-<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"=== T-Test Results ===</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Democratic mean: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(dem_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Republican mean: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(rep_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Difference: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(dem_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">mean</span>(rep_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, t_test<span class="sc">$</span>p.value))</span>
-<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"95%% CI: [%.2f, %.2f]</span><span class="sc">\n\n</span><span class="st">"</span>, t_test<span class="sc">$</span>conf.int[<span class="dv">1</span>], t_test<span class="sc">$</span>conf.int[<span class="dv">2</span>]))</span>
-<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"=== Wilcoxon Test Results ===</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, wilcox_test<span class="sc">$</span>p.value))</span>
-<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="fu">list</span>(<span class="at">t_test =</span> t_test, <span class="at">wilcox_test =</span> wilcox_test))</span>
-<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> <span class="fu">analyze_revisions</span>(CES)</span>
-<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a>analysis <span class="sc">|&gt;</span></span>
-<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(party) <span class="sc">|&gt;</span></span>
-<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
-<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a>    <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a>    <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_abs_revision =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(revision), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(party) <span class="sc">|&gt;</span></span>
-<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format_titles</span>() <span class="sc">|&gt;</span></span>
-<span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(</span>
-<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(</span>
-<span id="cb18-203"><a href="#cb18-203" aria-hidden="true" tabindex="-1"></a>      <span class="at">searching =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb18-204"><a href="#cb18-204" aria-hidden="true" tabindex="-1"></a>      <span class="at">paging =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb18-205"><a href="#cb18-205" aria-hidden="true" tabindex="-1"></a>      <span class="at">info =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb18-206"><a href="#cb18-206" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordering =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb18-207"><a href="#cb18-207" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">'Revision Values in thousands'</span>,</span>
-<span id="cb18-208"><a href="#cb18-208" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb18-209"><a href="#cb18-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Total Revision'</span>), <span class="at">digits =</span> <span class="dv">0</span>, <span class="at">mark=</span><span class="st">','</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-210"><a href="#cb18-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Mean Revision'</span>, <span class="st">'Median Revision'</span>, <span class="st">'Sd Revision'</span>, <span class="st">'Pct Positive'</span>, <span class="st">'Mean Abs Revision'</span>), <span class="at">digits =</span> <span class="dv">1</span>, <span class="at">mark=</span><span class="st">','</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Add president and party info</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>analyze_revisions <span class="ot">&lt;-</span> <span class="cf">function</span>(ces_data) {</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  ces_data <span class="sc">|&gt;</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assign_president</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>Is_Preliminary) <span class="sc">|&gt;</span>  <span class="co"># Only use final data</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">revision_pct =</span> (revision <span class="sc">/</span> original) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> <span class="fu">year</span>(Date),</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">month =</span> <span class="fu">month</span>(Date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics by party</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>summarize_by_party <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="sc">|&gt;</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(party) <span class="sc">|&gt;</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_abs_revision =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(revision), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(party) </span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary by president</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a>summarize_by_president <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a>  analysis_data <span class="sc">|&gt;</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(president, party) <span class="sc">|&gt;</span></span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>      <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>      <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(party, president)</span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization: Revisions by party</span></span>
+<span id="cb18-85"><a href="#cb18-85" aria-hidden="true" tabindex="-1"></a>plot_revisions_by_party <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-86"><a href="#cb18-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(analysis_data, <span class="fu">aes</span>(<span class="at">x =</span> party, <span class="at">y =</span> revision, <span class="at">fill =</span> party)) <span class="sc">+</span></span>
+<span id="cb18-87"><a href="#cb18-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb18-88"><a href="#cb18-88" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb18-89"><a href="#cb18-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
+<span id="cb18-90"><a href="#cb18-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb18-91"><a href="#cb18-91" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"CES Jobs Revisions by Presidential Party"</span>,</span>
+<span id="cb18-92"><a href="#cb18-92" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Initial estimate minus final estimate"</span>,</span>
+<span id="cb18-93"><a href="#cb18-93" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Party"</span>,</span>
+<span id="cb18-94"><a href="#cb18-94" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Revision (thousands of jobs)"</span>,</span>
+<span id="cb18-95"><a href="#cb18-95" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Negative values = initial estimate was too high"</span></span>
+<span id="cb18-96"><a href="#cb18-96" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb18-97"><a href="#cb18-97" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb18-98"><a href="#cb18-98" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb18-99"><a href="#cb18-99" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb18-100"><a href="#cb18-100" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb18-101"><a href="#cb18-101" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb18-102"><a href="#cb18-102" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-103"><a href="#cb18-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-104"><a href="#cb18-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Time series plot</span></span>
+<span id="cb18-105"><a href="#cb18-105" aria-hidden="true" tabindex="-1"></a>plot_revisions_timeline <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-106"><a href="#cb18-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(analysis_data, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> revision, <span class="at">color =</span> party)) <span class="sc">+</span></span>
+<span id="cb18-107"><a href="#cb18-107" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-108"><a href="#cb18-108" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb18-109"><a href="#cb18-109" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb18-110"><a href="#cb18-110" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb18-111"><a href="#cb18-111" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
+<span id="cb18-112"><a href="#cb18-112" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb18-113"><a href="#cb18-113" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"CES Jobs Revisions Over Time"</span>,</span>
+<span id="cb18-114"><a href="#cb18-114" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Date"</span>,</span>
+<span id="cb18-115"><a href="#cb18-115" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Revision (thousands of jobs)"</span>,</span>
+<span id="cb18-116"><a href="#cb18-116" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"Party"</span></span>
+<span id="cb18-117"><a href="#cb18-117" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb18-118"><a href="#cb18-118" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb18-119"><a href="#cb18-119" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb18-120"><a href="#cb18-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb18-121"><a href="#cb18-121" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb18-122"><a href="#cb18-122" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb18-123"><a href="#cb18-123" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-124"><a href="#cb18-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-125"><a href="#cb18-125" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar chart by president</span></span>
+<span id="cb18-126"><a href="#cb18-126" aria-hidden="true" tabindex="-1"></a>plot_by_president <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-127"><a href="#cb18-127" aria-hidden="true" tabindex="-1"></a>  president_avgs <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span></span>
+<span id="cb18-128"><a href="#cb18-128" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(president, party) <span class="sc">|&gt;</span></span>
+<span id="cb18-129"><a href="#cb18-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-130"><a href="#cb18-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">president =</span> <span class="fu">fct_reorder</span>(president, mean_revision))</span>
+<span id="cb18-131"><a href="#cb18-131" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-132"><a href="#cb18-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(president_avgs, <span class="fu">aes</span>(<span class="at">x =</span> president, <span class="at">y =</span> mean_revision, <span class="at">fill =</span> party)) <span class="sc">+</span></span>
+<span id="cb18-133"><a href="#cb18-133" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb18-134"><a href="#cb18-134" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray50"</span>) <span class="sc">+</span></span>
+<span id="cb18-135"><a href="#cb18-135" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Democratic"</span> <span class="ot">=</span> <span class="st">"#4575b4"</span>, <span class="st">"Republican"</span> <span class="ot">=</span> <span class="st">"#d73027"</span>)) <span class="sc">+</span></span>
+<span id="cb18-136"><a href="#cb18-136" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb18-137"><a href="#cb18-137" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb18-138"><a href="#cb18-138" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Average CES Jobs Revision by President"</span>,</span>
+<span id="cb18-139"><a href="#cb18-139" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb18-140"><a href="#cb18-140" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Mean Revision (thousands of jobs)"</span>,</span>
+<span id="cb18-141"><a href="#cb18-141" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Party"</span></span>
+<span id="cb18-142"><a href="#cb18-142" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb18-143"><a href="#cb18-143" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb18-144"><a href="#cb18-144" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb18-145"><a href="#cb18-145" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb18-146"><a href="#cb18-146" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb18-147"><a href="#cb18-147" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb18-148"><a href="#cb18-148" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-149"><a href="#cb18-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-150"><a href="#cb18-150" aria-hidden="true" tabindex="-1"></a><span class="co"># Statistical tests</span></span>
+<span id="cb18-151"><a href="#cb18-151" aria-hidden="true" tabindex="-1"></a>test_party_differences <span class="ot">&lt;-</span> <span class="cf">function</span>(analysis_data) {</span>
+<span id="cb18-152"><a href="#cb18-152" aria-hidden="true" tabindex="-1"></a>  dem_revisions <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span> </span>
+<span id="cb18-153"><a href="#cb18-153" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(party <span class="sc">==</span> <span class="st">"Democratic"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-154"><a href="#cb18-154" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(revision)</span>
+<span id="cb18-155"><a href="#cb18-155" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-156"><a href="#cb18-156" aria-hidden="true" tabindex="-1"></a>  rep_revisions <span class="ot">&lt;-</span> analysis_data <span class="sc">|&gt;</span> </span>
+<span id="cb18-157"><a href="#cb18-157" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(party <span class="sc">==</span> <span class="st">"Republican"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-158"><a href="#cb18-158" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(revision)</span>
+<span id="cb18-159"><a href="#cb18-159" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-160"><a href="#cb18-160" aria-hidden="true" tabindex="-1"></a>  t_test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(dem_revisions, rep_revisions)</span>
+<span id="cb18-161"><a href="#cb18-161" aria-hidden="true" tabindex="-1"></a>  wilcox_test <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(dem_revisions, rep_revisions)</span>
+<span id="cb18-162"><a href="#cb18-162" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-163"><a href="#cb18-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"=== T-Test Results ===</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb18-164"><a href="#cb18-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Democratic mean: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(dem_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb18-165"><a href="#cb18-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Republican mean: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(rep_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb18-166"><a href="#cb18-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Difference: %.2f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">mean</span>(dem_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">mean</span>(rep_revisions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb18-167"><a href="#cb18-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, t_test<span class="sc">$</span>p.value))</span>
+<span id="cb18-168"><a href="#cb18-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"95%% CI: [%.2f, %.2f]</span><span class="sc">\n\n</span><span class="st">"</span>, t_test<span class="sc">$</span>conf.int[<span class="dv">1</span>], t_test<span class="sc">$</span>conf.int[<span class="dv">2</span>]))</span>
+<span id="cb18-169"><a href="#cb18-169" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-170"><a href="#cb18-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"=== Wilcoxon Test Results ===</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb18-171"><a href="#cb18-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, wilcox_test<span class="sc">$</span>p.value))</span>
+<span id="cb18-172"><a href="#cb18-172" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-173"><a href="#cb18-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="fu">list</span>(<span class="at">t_test =</span> t_test, <span class="at">wilcox_test =</span> wilcox_test))</span>
+<span id="cb18-174"><a href="#cb18-174" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-175"><a href="#cb18-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-176"><a href="#cb18-176" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> <span class="fu">analyze_revisions</span>(CES)</span>
+<span id="cb18-177"><a href="#cb18-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-178"><a href="#cb18-178" aria-hidden="true" tabindex="-1"></a>analysis <span class="sc">|&gt;</span></span>
+<span id="cb18-179"><a href="#cb18-179" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(party) <span class="sc">|&gt;</span></span>
+<span id="cb18-180"><a href="#cb18-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb18-181"><a href="#cb18-181" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_months =</span> <span class="fu">n</span>(),</span>
+<span id="cb18-182"><a href="#cb18-182" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_revision =</span> <span class="fu">mean</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-183"><a href="#cb18-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_revision =</span> <span class="fu">median</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-184"><a href="#cb18-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_revision =</span> <span class="fu">sd</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-185"><a href="#cb18-185" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_revision =</span> <span class="fu">sum</span>(revision, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-186"><a href="#cb18-186" aria-hidden="true" tabindex="-1"></a>    <span class="at">positive_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-187"><a href="#cb18-187" aria-hidden="true" tabindex="-1"></a>    <span class="at">negative_revisions =</span> <span class="fu">sum</span>(revision <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-188"><a href="#cb18-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_positive =</span> (positive_revisions <span class="sc">/</span> n_months) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb18-189"><a href="#cb18-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_abs_revision =</span> <span class="fu">mean</span>(<span class="fu">abs</span>(revision), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-190"><a href="#cb18-190" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb18-191"><a href="#cb18-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(party) <span class="sc">|&gt;</span></span>
+<span id="cb18-192"><a href="#cb18-192" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format_titles</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-193"><a href="#cb18-193" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(</span>
+<span id="cb18-194"><a href="#cb18-194" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb18-195"><a href="#cb18-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">searching =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-196"><a href="#cb18-196" aria-hidden="true" tabindex="-1"></a>      <span class="at">paging =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-197"><a href="#cb18-197" aria-hidden="true" tabindex="-1"></a>      <span class="at">info =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb18-198"><a href="#cb18-198" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordering =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb18-199"><a href="#cb18-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">'Revision Values in thousands'</span>,</span>
+<span id="cb18-200"><a href="#cb18-200" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb18-201"><a href="#cb18-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Total Revision'</span>), <span class="at">digits =</span> <span class="dv">0</span>, <span class="at">mark=</span><span class="st">','</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-202"><a href="#cb18-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Mean Revision'</span>, <span class="st">'Median Revision'</span>, <span class="st">'Sd Revision'</span>, <span class="st">'Pct Positive'</span>, <span class="st">'Mean Abs Revision'</span>), <span class="at">digits =</span> <span class="dv">1</span>, <span class="at">mark=</span><span class="st">','</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-0348b31d45a124a998e3" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0348b31d45a124a998e3">{"x":{"filter":"none","vertical":false,"caption":"<caption>Revision Values in thousands<\/caption>","data":[["1","2"],["Democratic","Republican"],[265,294],[21.42264150943396,1.925170068027198],[18,0.5],[73.72704224467104,89.94352330647976],[5677,566],[169,147],[96,143],[63.77358490566037,50],[53.27169811320755,59.49659863945575]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Party<\/th>\n      <th>N Months<\/th>\n      <th>Mean Revision<\/th>\n      <th>Median Revision<\/th>\n      <th>Sd Revision<\/th>\n      <th>Total Revision<\/th>\n      <th>Positive Revisions<\/th>\n      <th>Negative Revisions<\/th>\n      <th>Pct Positive<\/th>\n      <th>Mean Abs Revision<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Party","targets":1},{"name":"N Months","targets":2},{"name":"Mean Revision","targets":3},{"name":"Median Revision","targets":4},{"name":"Sd Revision","targets":5},{"name":"Total Revision","targets":6},{"name":"Positive Revisions","targets":7},{"name":"Negative Revisions","targets":8},{"name":"Pct Positive","targets":9},{"name":"Mean Abs Revision","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-f76ff469911c332bda36" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f76ff469911c332bda36">{"x":{"filter":"none","vertical":false,"caption":"<caption>Revision Values in thousands<\/caption>","data":[["1","2"],["Democratic","Republican"],[265,294],[21.42264150943396,1.925170068027198],[18,0.5],[73.72704224467104,89.94352330647976],[5677,566],[169,147],[96,143],[63.77358490566037,50],[53.27169811320755,59.49659863945575]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Party<\/th>\n      <th>N Months<\/th>\n      <th>Mean Revision<\/th>\n      <th>Median Revision<\/th>\n      <th>Sd Revision<\/th>\n      <th>Total Revision<\/th>\n      <th>Positive Revisions<\/th>\n      <th>Negative Revisions<\/th>\n      <th>Pct Positive<\/th>\n      <th>Mean Abs Revision<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":9,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Party","targets":1},{"name":"N Months","targets":2},{"name":"Mean Revision","targets":3},{"name":"Median Revision","targets":4},{"name":"Sd Revision","targets":5},{"name":"Total Revision","targets":6},{"name":"Positive Revisions","targets":7},{"name":"Negative Revisions","targets":8},{"name":"Pct Positive","targets":9},{"name":"Mean Abs Revision","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.columnDefs.5.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1179,8 +1172,8 @@ table.dataTable tbody td {
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Mean Revision'</span>, <span class="st">'Median Revision'</span>, <span class="st">'Sd Revision'</span>, <span class="st">'Pct Positive'</span>), <span class="at">digits =</span> <span class="dv">1</span>, <span class="at">mark=</span><span class="st">','</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-b6ca0e86a569a5f13600" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-b6ca0e86a569a5f13600">{"x":{"filter":"none","vertical":false,"caption":"<caption>Revision Values in thousands<\/caption>","data":[["1","2","3","4","5","6","7","8","9"],["Biden","Carter","Clinton","Obama","Bush 41","Bush 43","Reagan","Trump I","Trump II"],["Democratic","Democratic","Democratic","Democratic","Republican","Republican","Republican","Republican","Republican"],[48,25,96,96,48,96,96,48,6],[21.27083333333335,12.56,24.46875,20.76041666666666,21.0625,2.291666666666667,1.26041666666667,-6.854166666666665,-76.16666666666667],[1.5,47,24,19,10.5,0.5,-4.5,4.5,-78.5],[113.1263160653825,121.4379402548204,57.21850144747533,41.76090964719763,73.44049733584441,63.34233084749079,100.367980298989,122.1366499412246,62.63997658577681],[1021,314,2349,1993,1011,220,121,-329,-457],[25,14,66,64,29,48,45,25,0],[23,11,30,32,17,47,50,23,6],[52.08333333333334,56.00000000000001,68.75,66.66666666666666,60.41666666666666,50,46.875,52.08333333333334,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>President<\/th>\n      <th>Party<\/th>\n      <th>N Months<\/th>\n      <th>Mean Revision<\/th>\n      <th>Median Revision<\/th>\n      <th>Sd Revision<\/th>\n      <th>Total Revision<\/th>\n      <th>Positive Revisions<\/th>\n      <th>Negative Revisions<\/th>\n      <th>Pct Positive<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"President","targets":1},{"name":"Party","targets":2},{"name":"N Months","targets":3},{"name":"Mean Revision","targets":4},{"name":"Median Revision","targets":5},{"name":"Sd Revision","targets":6},{"name":"Total Revision","targets":7},{"name":"Positive Revisions","targets":8},{"name":"Negative Revisions","targets":9},{"name":"Pct Positive","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1fe68bec7895edf0ad8b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1fe68bec7895edf0ad8b">{"x":{"filter":"none","vertical":false,"caption":"<caption>Revision Values in thousands<\/caption>","data":[["1","2","3","4","5","6","7","8","9"],["Biden","Carter","Clinton","Obama","Bush 41","Bush 43","Reagan","Trump I","Trump II"],["Democratic","Democratic","Democratic","Democratic","Republican","Republican","Republican","Republican","Republican"],[48,25,96,96,48,96,96,48,6],[21.27083333333335,12.56,24.46875,20.76041666666666,21.0625,2.291666666666667,1.26041666666667,-6.854166666666665,-76.16666666666667],[1.5,47,24,19,10.5,0.5,-4.5,4.5,-78.5],[113.1263160653825,121.4379402548204,57.21850144747533,41.76090964719763,73.44049733584441,63.34233084749079,100.367980298989,122.1366499412246,62.63997658577681],[1021,314,2349,1993,1011,220,121,-329,-457],[25,14,66,64,29,48,45,25,0],[23,11,30,32,17,47,50,23,6],[52.08333333333334,56.00000000000001,68.75,66.66666666666666,60.41666666666666,50,46.875,52.08333333333334,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>President<\/th>\n      <th>Party<\/th>\n      <th>N Months<\/th>\n      <th>Mean Revision<\/th>\n      <th>Median Revision<\/th>\n      <th>Sd Revision<\/th>\n      <th>Total Revision<\/th>\n      <th>Positive Revisions<\/th>\n      <th>Negative Revisions<\/th>\n      <th>Pct Positive<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":10,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":7,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"President","targets":1},{"name":"Party","targets":2},{"name":"N Months","targets":3},{"name":"Mean Revision","targets":4},{"name":"Median Revision","targets":5},{"name":"Sd Revision","targets":6},{"name":"Total Revision","targets":7},{"name":"Positive Revisions","targets":8},{"name":"Negative Revisions","targets":9},{"name":"Pct Positive","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1202,8 +1195,8 @@ p-value: 0.0060</code></pre>
 </div>
 <p>As we can see, there does appear to be a statistically significant difference between the Democratic mean and the Republican mean.</p>
 </section>
-<section id="task-5" class="level2">
-<h2 class="anchored" data-anchor-id="task-5">Task 5</h2>
+<section id="fact-checks-of-claims-task-5" class="level2">
+<h2 class="anchored" data-anchor-id="fact-checks-of-claims-task-5">Fact Checks of Claims (Task 5)</h2>
 <p>Let’s look at some of the claims that have been made regarding BLS statistics and try to see if there is a statistical basis for them. We will examine two claims, and decide whether they are true, using the <a href="https://www.politifact.com/">Politifact</a> scale:</p>
 <ul>
 <li><strong>TRUE</strong> – The statement is accurate and there’s nothing significant missing.</li>
@@ -1269,28 +1262,79 @@ p-value: 0.0060</code></pre>
 </div>
 </div>
 </div>
-<p>As you can see, 73,000 is a fairly typical value. So Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is <strong>FALSE</strong>.</p>
-<p><img src="https://static.politifact.com/politifact/rulings/meter-false.jpg" class="img-fluid" style="width:50.0%"></p>
-<p>In fairness, the number may have been considered shocking due to the size of the revision rather than the value itself.</p>
+<p>As you can see, 73,000 is a fairly typical value. We can also look at it in the context of the previous months in 2025.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>CODE: Recent month over month change</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show recent change</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>CES <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">prev_Value =</span> <span class="fu">lag</span>(Value), <span class="co"># Get the previous month's mean</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mom_change =</span> Value <span class="sc">-</span> prev_Value, <span class="co"># Absolute change</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mom_percent_change =</span> (Value <span class="sc">-</span> prev_Value) <span class="sc">/</span> prev_Value <span class="sc">*</span> <span class="dv">100</span> <span class="co"># Percentage change</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2025</span>, <span class="fu">month</span>(Date) <span class="sc">&lt;=</span> <span class="dv">7</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Date, original, mom_change, mom_percent_change) <span class="sc">|&gt;</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format_titles</span>() <span class="sc">|&gt;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">searching =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">paging =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">info =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordering =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">'Month-over-month change in thousands and %'</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Mom Percent Change'</span>), <span class="at">digits =</span> <span class="dv">4</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-3ac412d533b0357b0445" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3ac412d533b0357b0445">{"x":{"filter":"none","vertical":false,"caption":"<caption>Month-over-month change in thousands and %<\/caption>","data":[["1","2","3","4","5","6","7"],["2025-01-01","2025-02-01","2025-03-01","2025-04-01","2025-05-01","2025-06-01","2025-07-01"],[143,151,228,177,139,147,73],[111,102,120,158,19,-13,72],[0.06983679581230889,0.0641295668739351,0.07539819672646163,0.09919949772406216,0.01191723168980073,-0.008152923763891328,0.04515833641706233]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Original<\/th>\n      <th>Mom Change<\/th>\n      <th>Mom Percent Change<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 4, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Original","targets":2},{"name":"Mom Change","targets":3},{"name":"Mom Percent Change","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The 73,000 figure referred to July (shown as 73 in the Original column and revised down by 1,000 and showing in the final column as 72). The value is lower than the first 4 months of the year, but is higher than the two previous months. The Trump may well have been shocked by this number, but there is nothing inherently shocking about it. This claim is <strong>FALSE</strong>.</p>
+<p><img src="https://static.politifact.com/politifact/rulings/meter-false.jpg" class="img-fluid" style="width:30.0%"></p>
 <p><strong>Claim:</strong></p>
 <blockquote class="blockquote">
 <p>“The recent downward revisions constitute hard evidence of statistical tampering… Look, the fact is that when the data are unreliable, when they keep being revised all over the place, then there are going to be people that wonder if there’s a partisan pattern in the data” - Kevin Haskell</p>
 </blockquote>
-<p>If we consider these two statements from National Economic Council Director Kevin Haskell, we might be inclined to see them as contradictory. Do we have “hard evidence” or just “people that wonder”? Statistical tampering may be difficult to prove, but we can refer back to our analysis to examine whether there is an actual partisan pattern.</p>
+<p>This statement from National Economic Council Director Kevin Haskell came in response to downward revisions in May and June.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>CODE: Recent revisions</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show recent revisions</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>CES <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2025</span>, <span class="fu">month</span>(Date) <span class="sc">&lt;=</span> <span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Is_Preliminary) <span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format_titles</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">searching =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">paging =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">info =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">ordering =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">'Monthly change and revisions'</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">formatRound</span>(<span class="fu">c</span>(<span class="st">'Value'</span>), <span class="at">digits =</span> <span class="dv">0</span>, <span class="at">mark =</span> <span class="st">','</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-2349a6ee89c846fa1abb" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2349a6ee89c846fa1abb">{"x":{"filter":"none","vertical":false,"caption":"<caption>Monthly change and revisions<\/caption>","data":[["1","2","3","4","5","6","7"],["2025-01-01","2025-02-01","2025-03-01","2025-04-01","2025-05-01","2025-06-01","2025-07-01"],[159053,159155,159275,159433,159452,159439,159511],[143,151,228,177,139,147,73],[111,102,120,158,19,-13,72],[-32,-49,-108,-19,-120,-160,-1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Value<\/th>\n      <th>Original<\/th>\n      <th>Final<\/th>\n      <th>Revision<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"paging":false,"info":false,"ordering":false,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Date","targets":1},{"name":"Value","targets":2},{"name":"Original","targets":3},{"name":"Final","targets":4},{"name":"Revision","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<p>We see that there have been negative revisions for those months and really all of the months of 2025 before his statement. How can we evaluate this statement? We might be inclined to see the second part as contradicting the first part. Do we have “hard evidence” or just “people that wonder”? Statistical tampering may be difficult to prove, but we can refer back to our analysis to examine whether there is an actual partisan pattern.</p>
 <p>As we saw, there does appear to be a statistically significant difference between the Democratic mean and the Republican mean. Let’s visualize this.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>CODE: Visualize presidential timeline</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return analysis data for plotting</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(analysis)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#analysis &lt;- analyze_revisions(CES)</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_revisions_timeline</span>(analysis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return analysis data for plotting</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(analysis)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#analysis &lt;- analyze_revisions(CES)</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_revisions_timeline</span>(analysis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="mp04_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="mp04_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1299,19 +1343,25 @@ p-value: 0.0060</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>CODE: Visualize by president</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#analysis &lt;- analyze_revisions(CES)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_by_president</span>(analysis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#analysis &lt;- analyze_revisions(CES)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_by_president</span>(analysis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="mp04_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="mp04_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>So technically there is a “partisan pattern,” but we do not know why. Tampering is a theory. Another theory could be differences in policies or the economic cycle. Still another could be the declining participation in the BLS surveys recently. To be generous, let’s call this <strong>HALF TRUE</strong>.</p>
-<p><img src="https://static.politifact.com/politifact/rulings/meter-half-true.jpg" class="img-fluid" style="width:50.0%"></p>
+<p><img src="https://static.politifact.com/politifact/rulings/meter-half-true.jpg" class="img-fluid" style="width:30.0%"></p>
+</section>
+<section id="about-computationally-intensive-inference" class="level2">
+<h2 class="anchored" data-anchor-id="about-computationally-intensive-inference">About Computationally-Intensive Inference</h2>
+<p>Using statistical tests traditionally relies on long-established formulae and assumptions about the distribution of data in a population and/or a set of samples. Statistics as a field pre-dates computers. Computationally-intensive inference makes possible a kind of statistical experimentation by simulating thousands or even millions of scenarios based on an existing set of data, a defined set of possible values, or random values.</p>
+<p>For example, instead of relying on established assumptions about, say, the outcome of 100 coin tosses and how likely it would be to see certain combinations of heads and tail, we can have the computer simulate the coin tosses 1,000 times (so 100 * 1,000 coin tosses). Of course coins could have been tossed repeatedly before the computer age, but computers make this type of experiment vastly faster and easier. However, it is “computationally-intensive,” meaning it requires more computing power than simply applying a traditional formula.</p>
+<p>The play (and film) <a href="https://daily.jstor.org/statistics-of-coin-tosses-theater-geeks/">Rosencranz &amp; Guildenstern are Dead</a> riffs on the idea of randomness and coin tosses, but this is decidedly not a computationally-intensive apprach. <img src="https://daily.jstor.org/wp-content/uploads/2017/04/quarters_heads_1050x700.jpg" class="img-fluid"></p>
 <hr>
 <p>This work ©2025 by jesse-nover was initially prepared as a Mini-Project for STA 9750 at Baruch College. More details about this course can be found at <a href="https://michael-weylandt.com/STA9750">the course site</a> and instructions for this assignment can be found at <a href="https://michael-weylandt.com/STA9750/miniprojects/mini04.html">MP #04</a></p>
 
