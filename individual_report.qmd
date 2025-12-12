@@ -333,7 +333,7 @@ if ("locationname" %in% names(health_wide)) {
 }
 ```
 
-While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. Instead, the CDC USDSS data can be used.
+While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. Instead, the CDC US Diabetes Surveillance System (USDSS) data can be used.
 ```{r}
 #| code-summary: "CODE: Load temporal data"
 #| message: false
@@ -366,7 +366,7 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
       
       # The first row should contain the headers: County,State,CountyFIPS,Percentage,Lower CI,Upper CI
       header_row <- df$data_string[1]
-      cat(paste("  Header:", header_row, "\n"))
+      # cat(paste("  Header:", header_row, "\n"))
       
       # Parse the actual data rows (skip the header row)
       data_rows <- df$data_string[-1]
@@ -503,33 +503,10 @@ tracts_health <- us_tracts %>%
 #            100 * sum(!is.na(tracts_health$obesity)) / nrow(tracts_health)))
 
 # Check CT specifically after join
-ct_tracts <- tracts_health %>% filter(state == "CT" | stateabbr == "CT")
+# ct_tracts <- tracts_health %>% filter(state == "CT" | stateabbr == "CT")
 # cat(sprintf("\nConnecticut tracts after join: %d\n", nrow(ct_tracts)))
 # cat(sprintf("  - With diabetes data: %d\n", sum(!is.na(ct_tracts$diabetes))))
 # cat(sprintf("  - With obesity data: %d\n", sum(!is.na(ct_tracts$obesity))))
-```
-
-```{r}
-#| code-summary: "CODE: Food insecurity data"
-#| message: false
-#| warning: false
-# Thanks Angela
-#---- Preparing Food Atlas table ---- 
-
-#reading csv file 
-# FOOD_ATLAS <- read.csv("data/final/Food Access Research Atlas.csv") 
-# 
-# #removing unnecessary columns  
-# FOOD_ATLAS <- FOOD_ATLAS |> select("CensusTract","State","County", "Urban", "Pop2010", "LowIncomeTracts", "PovertyRate", "MedianFamilyIncome", "LA1and10", "LAhalfand10", "LA1and20","TractHUNV", "TractSNAP") 
-# 
-# #creating a new column formatting geoid to join with tigris  
-# # FOOD_ATLAS <- FOOD_ATLAS |> filter(!is.na(CensusTract)) |> # remove missing mutate( GEOID = str_pad(as.character(CensusTract), width = 11, pad = "0") ) 
-# 
-# #joining food and tract  
-# tracts_health_extended <- tracts_health |> left_join(FOOD_ATLAS, by = "GEOID")|> select(-"COUNTYFP", -"TRACTCE", -"AFFGEOID", -"LSAD", -"NAME") 
-# 
-# tracts_health_extended |>
-#   slice_head(n = 10)
 ```
 
 ## Exploratory Data Analysis
@@ -618,6 +595,10 @@ hist_combined <- h1 / h2 +
 hist_combined
 
 ```
+The obesity data appears to be normally distributed. The diabetes data shows some right skew with some elevated outliers.
+
+Since obesity is recognized as a risk factor for type 2 diabetes, we would expect a relationship between the values, and the shapes of the distributions appear to be related.
+
 Let's examine some of the census tracts that stand out.
 ```{r}
 #| code-summary: "CODE: Top 5 Census Tracts with Highest Diabetes Prevalence"
@@ -650,7 +631,7 @@ top_diabetes |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
 <br>
-Census tracts can vary greatly in terms of population and incidence. In some cases, a census tract may distort the view of incidence. For example, the CA and NY tracts topping this list are entirely populated by residents in an assisted living facility in San Francisco, CA and a VA assisted living facility in Queens, NY. These tracts are clearly outliers and not representing the larger population trends well.
+Census tracts can vary greatly in terms of population and incidence. In some cases, a census tract may distort the view of incidence. For example, the CA tract topping this list is entirely populated by residents in an assisted living facility in San Francisco, and the NY tract near the top is only home to residents of a VA assisted living facility in Queens. These tracts are clearly outliers and not representative of the larger population trends.
 ```{r}
 #| code-summary: "CODE: Top 5 Census Tracts with Highest Obesity Prevalence:"
 #| message: false
@@ -676,9 +657,9 @@ top_obesity |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
 <br>
-Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which may not represent the overall trend well.
+Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which also likely does not represent the overall trend well.
 
-To zoom out just a bit, it may be more helpful to look at things from the county level.
+To zoom out just a bit, it may be more helpful to look at things at the county level.
 
 ```{r}
 #| code-summary: "CODE: Top 10 Counties by Average Diabetes Prevalence"
@@ -760,9 +741,9 @@ county_summary_obesity |>
   formatRound(c('Avg Obesity'), digits = 1)
 ```
 <br>
-There are a lot of counties in Mississippi and Alabama topping this list.
+There are a lot of counties in Mississippi and Alabama topping the list for obesity.
 
-How similar are the patterns of obesity and diabetes? Obesity is considered a major risk factor for type 2 diabetes. It seems likely that we would see a high incidence of diabetes where we see a high incidence of obesity.
+How similar are the patterns of obesity and diabetes? Several counties appear on both lists and there is a fair amount of overlap in terms of state representation.
 ```{r}
 #| code-summary: "CODE: Plot incidence"
 #| message: false
@@ -801,7 +782,7 @@ ggplot(county_summary, aes(x = avg_diabetes, y = avg_obesity)) +
 
 ```
 
-The counties with the highest levels of both obesity and diabetes in the upper right. It does appear that there is a rough correlation between the values. To make this data more digestible, let's look at a state summary plot.
+The counties with the highest levels of both obesity and diabetes can be found in the upper right. It does appear that there is a rough correlation between the values. To make this data more digestible, let's look at a state summary plot.
 
 ```{r}
 # Create state-level summary for bubble plot
@@ -870,7 +851,7 @@ p_bubble <- ggplot(state_summary, aes(x = avg_diabetes, y = avg_obesity)) +
 
 p_bubble
 ```
-The color coding allows for a division among the states. Some states are high in both diabetes and obesity measures, some are low in both, and a few are high in one measure but not the other. The bubble size helps to give a sense for the scale of the impact based on state population.
+The color coding helps to visualize differences among the states. Some states are high in both diabetes and obesity measures, some are low in both, and a few are high in one measure but not the other. The bubble size helps to give a sense for the scale of the impact based on state population. States like West Virginia, Mississippi, Louisiana, and Alabama appear in the upper right, indicating that they have the highest levels of diabetes and obesity. States like Vermont and Colorado have the lowest levels. Hawaii is a bit of an anomaly because it is high in diabetes but the lowest state in obesity.
 
 ## National Maps
 Let's map the incidence levels across the country.
@@ -914,7 +895,7 @@ ggplot(tracts_health) +
        caption = "Source: CDC PLACES 2025"
        )
 ```
-As the map makes clear, there are high levels of diabetes through parts of the deep south, Texas, pockets of the southwest and appalachia. 
+As the map makes clear, there are high levels of diabetes through parts of the deep south, Texas, pockets of the southwest and Appalachia. Lower levels are visible in the northeast, the west coast, and much of the midwest and west.
 ```{r}
 #| code-summary: "CODE: Obesity prevalence map"
 #| message: false
@@ -949,7 +930,7 @@ ggplot(tracts_health) +
        caption = "Source: CDC PLACES 2025"
        )
 ```
-The obesity map follows a pattern similar to the diabetes map, with some additional areas of the upper midwest registering high values along with the south.
+The obesity map follows a pattern similar to the diabetes map, except that areas of the upper midwest and west are also registering high values.
 
 To put this in context, it may be helpful to see how these areas relate to population density.
 
@@ -989,8 +970,9 @@ p_density <- ggplot(tracts_health) +
 
 p_density
 ```
+When viewing this map with the previous two, it becomes apparent that the more densely populated areas are generally showing lower rates of obesity and density. It suggests that there may be a "rural effect" on health trends.
 
-How have diabetes rates changed over time? Let's look at the trend over time.
+How have diabetes rates changed over time? Let's look at the trend.
 
 ```{r}
 #| code-summary: "CODE: Diabetes map over time"
@@ -1146,6 +1128,8 @@ trend_analysis <- analyze_diabetes_trends(temporal_diabetes)
 ```
 As should be clear through the maps, diabetes prevalence is growing substantially. Looking at the data for **`r format(nrow(trend_analysis), big.mark =',')`** counties, the median absolute change is **`r round(median(trend_analysis$absolute_change, na.rm = TRUE), 2)` percentage points** and the median percent change is **`r round(median(trend_analysis$percent_change, na.rm = TRUE), 2)`%.**
 
+What might account for this trend? More obesity and less physical activity could be a factor. An aging population could be another. It might also be due to increased diagnosis and better access to healthcare. In other words, it's possible that the actual rate didn't change, but that the recognized rate changed.
+
 ```{r}
 #| code-summary: "CODE: Counties with the biggest change"
 #| message: false
@@ -1165,6 +1149,7 @@ trend_analysis |>
   formatRound(c('First Prevalence', 'Last Prevalence', 'Absolute Change'), digits = 1)
   
 ```
+Looking at the counties with the biggest change, we see that Ohio and Florida counties, states with high populations, are on the top of this list.
 
 ## State Maps
 Let's look at some of the states where the incidence looked especially high: TX, AL, MS, and TX.
@@ -1260,7 +1245,7 @@ AL_obesity <- create_state_map("AL", "Obesity", "obesity")
 combined_plot2 <- AL_diabetes + AL_obesity + plot_layout(ncol = 2)
 combined_plot2
 ```
-Alabama has the third-highest level by states in diabetes and the fourth-highest in obesity. We can see that the highest levels are concentrated in the south and especially southwester parts of the state.
+Alabama has the third-highest level by states in diabetes and the fourth-highest in obesity. We can see that the highest levels are concentrated in the south and especially southwestern parts of the state.
 ```{r}
 #| code-summary: "CODE: MS state maps"
 #| message: false
@@ -1286,6 +1271,9 @@ combined_plot4 <- WV_diabetes + WV_obesity + plot_layout(ncol = 2)
 combined_plot4
 ```
 West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
+
+## Conclusion
+Let's plot the correlation between obesity and diabetes.
 ```{r}
 #| code-summary: "CODE: Correlation"
 #| message: false
@@ -1314,7 +1302,7 @@ if(nrow(cor_data) > 0) {
 }
 
 ```
-Saving the data to speed up processing in the future.
+As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well. 
 ```{r}
 #| code-summary: "CODE: Save data files"
 #| message: false
