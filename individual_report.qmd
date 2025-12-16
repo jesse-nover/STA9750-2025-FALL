@@ -10,7 +10,7 @@ format:
         toc-title: "On this page"
         toc-location: right
         toc-depth: 5
-        self-contained: true
+
 ---
 ```{css}
 #| code-summary: "CODE: CSS"
@@ -1149,6 +1149,7 @@ trend_analysis |>
   formatRound(c('First Prevalence', 'Last Prevalence', 'Absolute Change'), digits = 1)
   
 ```
+<br>
 Looking at the counties with the biggest change, we see that Ohio and Florida counties, states with high populations, are on the top of this list.
 
 ## State Maps
