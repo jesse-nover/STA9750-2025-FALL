@@ -10,7 +10,7 @@ format:
         toc-title: "On this page"
         toc-location: right
         toc-depth: 5
-
+        self-contained: true
 ---
 ```{css}
 #| code-summary: "CODE: CSS"
@@ -60,6 +60,7 @@ This project will use [CDC Places](https://www.cdc.gov/places/about/index.html) 
 
 > PLACES provides health and health-related data using small-area estimation for counties, incorporated and census designated places, census tracts, and ZIP Code Tabulation Areas (ZCTAs) across the United States. This project, which started in 2015, is a partnership between CDC, the Robert Wood Johnson Foundation (RWJF), and CDC Foundation.
 
+The CDC Places data will be retrieved via an API and stored locally in .rds cache files for faster retrieval subsequently.
 ```{r}
 #| code-summary: "CODE: Download and setup data files"
 #| message: false
@@ -328,7 +329,7 @@ if ("locationname" %in% names(health_wide)) {
 }
 ```
 
-While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. Instead, the CDC US Diabetes Surveillance System (USDSS) data can be used.
+While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. Instead, the CDC US Diabetes Surveillance System (USDSS) data can be used. This data must be downloaded manually for each year of interest. See code comments for instructions. 
 ```{r}
 #| code-summary: "CODE: Load temporal data"
 #| message: false
@@ -413,7 +414,7 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
 # Load temporal data
 temporal_diabetes <- load_temporal_diabetes(years = c(2004, 2009, 2014, 2019))
 ```
-Finally, census tract shape files will be downloaded to enable the creation of maps at the national and state level.
+Finally, census tract shape files will be downloaded to enable the creation of maps at the national and state level. These shapes are stored in a cache file for faster loading after the first download.
 ```{r}
 #| code-summary: "CODE: Download shape files for mapping"
 #| message: false
@@ -443,24 +444,6 @@ if (file.exists(tracts_cache_file)) {
 }
 
 # 6. Join health data to spatial data
-
-# first few rows are some leftover debugging code
-sample_geoids <- head(us_tracts$GEOID, 3)
-# print(sample_geoids)
-# cat(sprintf("GEOID length: %d\n", nchar(sample_geoids[1])))
-
-# cat("\nSample tractfips from health data:\n")
-sample_tractfips <- head(health_wide$tractfips, 3)
-# print(sample_tractfips)
-# cat(sprintf("tractfips length: %d\n", nchar(sample_tractfips[1])))
-
-# Check CT specifically
-ct_geoids <- us_tracts %>% filter(STATEFP == "09") %>% head(3) %>% pull(GEOID)
-ct_tractfips <- health_wide %>% filter(stateabbr == "CT") %>% head(3) %>% pull(tractfips)
-# cat("\nConnecticut GEOID samples:\n")
-# print(ct_geoids)
-# cat("\nConnecticut tractfips samples:\n")
-# print(ct_tractfips)
 
 # Perform join and add county names
 tracts_health <- us_tracts %>%
@@ -600,7 +583,6 @@ top_diabetes |>
   formatRound(c('Totalpopulation'), digits = 0, mark=',') |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
-<br>
 Census tracts can vary greatly in terms of population and incidence. In some cases, a census tract may distort the view of incidence. For example, the CA tract topping this list is entirely populated by residents in an assisted living facility in San Francisco, and the NY tract near the top is only home to residents of a VA assisted living facility in Queens. These tracts are clearly outliers and not representative of the larger population trends.
 ```{r}
 #| code-summary: "CODE: Top 5 Census Tracts with Highest Obesity Prevalence:"
@@ -626,7 +608,6 @@ top_obesity |>
   formatRound(c('Totalpopulation'), digits = 0, mark=',') |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
-<br>
 Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which also likely does not represent the overall trend well.
 
 To zoom out just a bit, it may be more helpful to look at things at the county level.
@@ -1076,20 +1057,7 @@ analyze_diabetes_trends <- function(temporal_data) {
       .groups = "drop"
     ) %>%
     filter(years_available >= 2)
-  
-  # cat("\n=== Diabetes Trends Summary ===\n")
-  # cat(sprintf("Counties with trend data: %d\n", nrow(trend_summary)))
-  # cat(sprintf("Median absolute change: %.2f percentage points\n", 
-  #             median(trend_summary$absolute_change, na.rm = TRUE)))
-  # cat(sprintf("Median percent change: %.1f%%\n", 
-  #             median(trend_summary$percent_change, na.rm = TRUE)))
-  # 
-  # cat("\nTop 10 Counties with Largest Increases:\n")
-  # print(trend_summary %>%
-  #         arrange(desc(absolute_change)) %>%
-  #         head(10) %>%
-  #         select(County, State, first_year, last_year, 
-  #                first_prevalence, last_prevalence, absolute_change))
+
   
   return(trend_summary)
 }
@@ -1120,10 +1088,10 @@ trend_analysis |>
   
 ```
 <br>
-Looking at the counties with the biggest change, we see that Ohio and Florida counties, states with high populations, are on the top of this list.
+Looking at the counties with the biggest change, we see that counties in Ohio and Florida, states with high populations, are on the top of this list.
 
 ## State Maps
-Let's look at some of the states where the incidence looked especially high: TX, AL, MS, and TX.
+Let's take a closer look at some of the states where the incidence was especially high: TX, AL, MS, and WV.
 ```{r}
 #| code-summary: "CODE: TX state maps"
 #| message: false
@@ -1201,7 +1169,7 @@ TX_density <- create_density_map("TX")
 # Combined view (side by side instead of stacked)
 combined_plot <- TX_diabetes + TX_obesity + plot_layout(ncol = 2)
 combined_plot
-#TX_density
+
 ```
 While Texas did not have the very highest levels by state, it is the largest state in terms of population with levels above the median in both measures. This makes it worth a closer look. We can see that levels are especially high in the west and along the border with Mexico.
 
@@ -1254,11 +1222,19 @@ cor_data <- tracts_health %>%
   st_drop_geometry() %>%
   filter(!is.na(diabetes) & !is.na(obesity))
 
+# Calculate correlation
+if(nrow(cor_data) > 0) {
+  cor_value <- cor(cor_data$diabetes, cor_data$obesity, use = "complete.obs")
+}
+
 p3 <- ggplot(cor_data, aes(x = obesity, y = diabetes)) +
   geom_hex(bins = 50) +
   scale_fill_viridis(option = "inferno", name = "Count") +
   geom_smooth(method = "lm", color = "red", se = TRUE) +
   theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16)
+  ) +
   labs(
     title = "Correlation between Obesity and Diabetes Prevalence",
     x = "Obesity Prevalence (%)",
@@ -1266,28 +1242,10 @@ p3 <- ggplot(cor_data, aes(x = obesity, y = diabetes)) +
   )
 print(p3)
 
-# Calculate correlation
-if(nrow(cor_data) > 0) {
-  cor_value <- cor(cor_data$diabetes, cor_data$obesity, use = "complete.obs")
-  cat(sprintf("\nCorrelation between diabetes and obesity: %.3f\n", cor_value))
-}
-
 ```
-As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well.
+As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well. The correlation between diabetes and obesity is **`r round(cor_value, 3)`**. For context, a correlation of 1 would indicate a perfect correlation, 0 would mean that there is no linear relationship, and -1 would indicate a perfect negative correlation.
 
 While the goal of this investigation wasn't specifically to "solve" the problem of diabetes, addressing obesity (perhaps with the usual approach of diet and exercise changes) would appear to be a clear way to reduce the incidence of type 2 diabetes. The elevated prevalence of both factors in rural areas suggests that public health advocates need to seek strategies to reach small and dispersed communities to provide appropriate education and/or interventions.
 
 As far as the role of food access and the impact of food deserts on the incidence of obesity and diabetes, see the [full report](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html).
 
-```{r}
-#| code-summary: "CODE: Save data files"
-#| message: false
-#| warning: false
-#| 
-# 10. Save the data
-
-write_csv(health_wide, "places_health_data.csv")
-saveRDS(tracts_health, "tracts_health_spatial.rds")
-
-# To refresh data, delete the cache files and re-run the script
-```
