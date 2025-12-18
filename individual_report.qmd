@@ -477,7 +477,9 @@ summary(health_wide$obesity)
 
 summary(health_wide$bphigh)
 ```
-Plotting the distribution of values gives a sense for what is typical.
+While we are not specifically focused on blood pressure, there are a number of different health-related statistics provided by the PLACES data, and further investigation may be warranted to consider the complete set of relevant measurements. Some of the other data not being used includes heart disease, physical inactivity, smoking, and binge drinking. 
+
+The focus will be on obesity and diabetes. Plotting the distribution of values will give a sense for what is typical.
 ```{r}
 #| code-summary: "CODE: Histograms"
 #| message: false
@@ -553,6 +555,7 @@ format_titles <- function(df){
   df
 }
 
+avg_tract_pop <- health_wide |> summarize(avg_pop = mean(totalpopulation))
 
 top_diabetes <- health_wide %>%
   filter(!is.na(diabetes)) %>%
@@ -574,7 +577,7 @@ top_diabetes |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
 <br>
-Census tracts can vary greatly in terms of population and incidence. In some cases, a census tract may distort the view of incidence. For example, the CA tract topping this list is entirely populated by residents in an assisted living facility in San Francisco, and the NY tract near the top is only home to residents of a VA assisted living facility in Queens. These tracts are clearly outliers and not representative of the larger population trends.
+Census tracts can vary greatly in terms of population and incidence. The average census tract has a population of **`r format(round(avg_tract_pop$avg_pop, digits=0), big.mark =',')`**. Note that all of the tracts in this list are below average, and some are quite low. In some cases, a census tract may distort the view of incidence. For example, the CA tract topping this list is entirely populated by residents in an assisted living facility in San Francisco, and the NY tract near the top is only home to residents of a VA assisted living facility in Queens. These tracts are clearly outliers and not representative of the larger population trends.
 ```{r}
 #| code-summary: "CODE: Top 5 Census Tracts with Highest Obesity Prevalence:"
 #| message: false
@@ -600,9 +603,7 @@ top_obesity |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
 <br>
-Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which also likely does not represent the overall trend well.
-
-To zoom out just a bit, it may be more helpful to look at things at the county level.
+Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which also likely does not represent the overall trend well. To get a better read on the trend, it may be more helpful to look at things at the county level.
 
 ```{r}
 #| code-summary: "CODE: Top 10 Counties by Average Diabetes Prevalence"
@@ -637,6 +638,8 @@ county_summary_diabetes <- tracts_health %>%
   ) %>%
   arrange(desc(avg_diabetes))
 
+avg_county_pop <- county_summary_diabetes |> summarize(avg_pop = mean(population))
+
 county_summary_diabetes |>
   head(10) |>
   format_titles() |>
@@ -648,10 +651,11 @@ county_summary_diabetes |>
       ordering = FALSE),
     caption = "Source: CDC PLACES"
   ) |>
-  formatRound(c('Avg Diabetes'), digits = 1)
+  formatRound(c('Avg Diabetes'), digits = 1) |>
+  formatRound(c('Population'), digits = 0, mark=',')
 ```
 <br>
-Here we see that the counties with the highest diabetes prevalence are in Alabama and Texas.
+Here we see that the counties with the highest diabetes prevalence are in Alabama and Texas. The average county population is **`r format(round(avg_county_pop$avg_pop, digits=0), big.mark =',')`**. All of the counties appearing on this list are well below the average in population. This may be an indicator that rural communities are more likely to have a high diabetes rate.
 
 ```{r}
 #| code-summary: "CODE: Top 10 Counties by Average Obesity Prevalence"
@@ -681,10 +685,11 @@ county_summary_obesity |>
       ordering = FALSE),
     caption = "Source: CDC PLACES"
   ) |>
-  formatRound(c('Avg Obesity'), digits = 1)
+  formatRound(c('Avg Obesity'), digits = 1) |>
+  formatRound(c('Population'), digits = 0, mark=',')
 ```
 <br>
-There are a lot of counties in Mississippi and Alabama topping the list for obesity.
+There are a lot of counties in Mississippi and Alabama topping the list for obesity. These counties are also lower in population than average.
 
 How similar are the patterns of obesity and diabetes? Several counties appear on both lists and there is a fair amount of overlap in terms of state representation.
 ```{r}
