@@ -44,7 +44,6 @@ table.dataTable tbody td {
 }
 
 ```
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
 ## Introduction
 This project looks at diabetes and obesity patterns in the United States. It is part of a [larger investigation](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html) into the idea of **food deserts**, or communities with limited access to nutritious and affordable food. While the exact definition of a food desert is subject to some ongoing debate, this explanation from the USDA is helpful:
@@ -326,7 +325,7 @@ if ("locationname" %in% names(health_wide)) {
 }
 ```
 
-While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. Instead, the CDC US Diabetes Surveillance System (USDSS) data can be used. This data must be downloaded manually for each year of interest. See code comments for instructions. 
+While the CDC PLACES data is released for multiple years, it is not recommended to be used for evaluating trends (such as diabetes prevalence) over time. This is due to the fact that the population information relies on 2010 values and the data is self-reported. To supplement the PLACES data, CDC US Diabetes Surveillance System (USDSS) data will be used. This data must be downloaded manually for each year of interest. See code comments for detailed instructions. 
 ```{r}
 #| code-summary: "CODE: Load temporal data"
 #| message: false
@@ -436,7 +435,6 @@ if (file.exists(tracts_cache_file)) {
 }
 
 # 6. Join health data to spatial data
-
 # Perform join and add county names
 tracts_health <- us_tracts %>%
   left_join(health_wide, by = c("GEOID" = "tractfips")) %>%
