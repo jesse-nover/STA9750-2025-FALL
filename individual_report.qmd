@@ -46,7 +46,7 @@ table.dataTable tbody td {
 ```
 
 ## Introduction
-This project looks at diabetes and obesity patterns in the United States. It is part of a [larger investigation](http://) into the idea of **food deserts**, or communities with limited access to nutritious and affordable food. While the exact definition of a food desert is subject to some ongoing debate, this explanation from the USDA is helpful:
+This project looks at diabetes and obesity patterns in the United States. It is part of a [larger investigation](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html) into the idea of **food deserts**, or communities with limited access to nutritious and affordable food. While the exact definition of a food desert is subject to some ongoing debate, this explanation from the USDA is helpful:
 
 > Census tracts qualify as food deserts if they meet low-income and low-access thresholds:
 >
@@ -65,8 +65,7 @@ This project will use [CDC Places](https://www.cdc.gov/places/about/index.html) 
 #| message: false
 #| warning: false
 
-# PLACES Census Tract Health Data Analysis
-# Downloads and maps diabetes and obesity prevalence from CDC PLACES data
+# Download diabetes and obesity prevalence from CDC PLACES Census Tract Health Data
 
 # Load required libraries
 library(tidyverse)
@@ -95,12 +94,8 @@ tracts_cache_file <- file.path("data", "final", "census_tracts_cache.rds")
 dir.create(file.path("data", "final"), recursive = TRUE, showWarnings = FALSE)
 
 # 1. Download PLACES data from CDC (with caching)
-# cat("Checking for cached PLACES data...\n")
-
 if (file.exists(places_cache_file)) {
-  # cat("Loading PLACES data from cache...\n")
   places_data <- readRDS(places_cache_file)
-  # cat(paste("Loaded", nrow(places_data), "cached records\n"))
 } else {
   cat("No cache found. Downloading PLACES data from CDC...\n")
   
@@ -272,7 +267,7 @@ if (file.exists(places_cache_file)) {
 # cat("\nColumn names in downloaded data:\n")
 # print(names(places_data))
 
-# 2. Process health data
+# Process health data
 # Handle different possible column name variations
 if ("tractfips" %in% names(places_data)) {
   tract_col <- "tractfips"
@@ -366,7 +361,6 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
       
       # The first row should contain the headers: County,State,CountyFIPS,Percentage,Lower CI,Upper CI
       header_row <- df$data_string[1]
-      # cat(paste("  Header:", header_row, "\n"))
       
       # Parse the actual data rows (skip the header row)
       data_rows <- df$data_string[-1]
@@ -416,22 +410,18 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
   }
 }
 
-# Try to load temporal data
-# cat("\n=== Attempting to load temporal diabetes data ===\n")
+# Load temporal data
 temporal_diabetes <- load_temporal_diabetes(years = c(2004, 2009, 2014, 2019))
 ```
-
+Finally, census tract shape files will be downloaded to enable the creation of maps at the national and state level.
 ```{r}
 #| code-summary: "CODE: Download shape files for mapping"
 #| message: false
 #| warning: false
-# 5. Download census tract shapefiles for mapping (with caching)
-# cat("\nChecking for cached census tract boundaries...\n")
 
+# 5. Download census tract shapefiles for mapping (with caching)
 if (file.exists(tracts_cache_file)) {
-  # cat("Loading census tracts from cache...\n")
   us_tracts <- readRDS(tracts_cache_file)
-  # cat(paste("Loaded", nrow(us_tracts), "cached tracts\n"))
 } else {
   cat("No cache found. Downloading census tract boundaries...\n")
   cat("This may take several minutes...\n")
@@ -443,7 +433,6 @@ if (file.exists(tracts_cache_file)) {
   # Download tracts for all states
   # Use year = 2022 to get Connecticut's new planning region codes
   us_tracts <- map_dfr(states_in_data, function(state) {
-    # cat(paste("Downloading tracts for", state, "...\n"))
     tracts(state = state, year = 2022, cb = TRUE) %>%
       mutate(state = state)
   })
@@ -451,15 +440,11 @@ if (file.exists(tracts_cache_file)) {
   # Save to cache
   # cat("Saving census tracts to cache...\n")
   saveRDS(us_tracts, tracts_cache_file)
-  # cat("Cache saved!\n")
 }
 
 # 6. Join health data to spatial data
-# cat("Joining health data to geographic boundaries...\n")
 
-# Check FIPS code formats before joining
-# cat("\nDiagnosing FIPS code formats...\n")
-# cat("Sample GEOID from census tracts:\n")
+# first few rows are some leftover debugging code
 sample_geoids <- head(us_tracts$GEOID, 3)
 # print(sample_geoids)
 # cat(sprintf("GEOID length: %d\n", nchar(sample_geoids[1])))
@@ -492,21 +477,6 @@ tracts_health <- us_tracts %>%
     pop_density = totalpopulation / area_sqmi
   )
 
-# Check join success
-# cat("\nJoin diagnostics:\n")
-# cat(sprintf("Total census tracts: %d\n", nrow(tracts_health)))
-# cat(sprintf("Tracts with diabetes data: %d (%.1f%%)\n", 
-#            sum(!is.na(tracts_health$diabetes)),
-#            100 * sum(!is.na(tracts_health$diabetes)) / nrow(tracts_health)))
-# cat(sprintf("Tracts with obesity data: %d (%.1f%%)\n",
-#             sum(!is.na(tracts_health$obesity)),
-#            100 * sum(!is.na(tracts_health$obesity)) / nrow(tracts_health)))
-
-# Check CT specifically after join
-# ct_tracts <- tracts_health %>% filter(state == "CT" | stateabbr == "CT")
-# cat(sprintf("\nConnecticut tracts after join: %d\n", nrow(ct_tracts)))
-# cat(sprintf("  - With diabetes data: %d\n", sum(!is.na(ct_tracts$diabetes))))
-# cat(sprintf("  - With obesity data: %d\n", sum(!is.na(ct_tracts$obesity))))
 ```
 
 ## Exploratory Data Analysis
@@ -1314,12 +1284,5 @@ As suggested previously, there is a strong, positive linear relationship between
 write_csv(health_wide, "places_health_data.csv")
 saveRDS(tracts_health, "tracts_health_spatial.rds")
 
-# cat("\nAnalysis complete!\n")
-# cat("Files saved:\n")
-# cat("  - places_health_data.csv (tabular data)\n")
-# cat("  - tracts_health_spatial.rds (spatial data)\n")
-# cat("\nCache files created for faster future runs:\n")
-# cat("  - places_data_cache.rds (PLACES data)\n")
-# cat("  - census_tracts_cache.rds (census boundaries)\n")
-# cat("\nTo refresh data, delete the cache files and re-run the script.\n")
+# To refresh data, delete the cache files and re-run the script
 ```
