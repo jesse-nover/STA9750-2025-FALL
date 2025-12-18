@@ -689,7 +689,7 @@ county_summary_obesity |>
   formatRound(c('Population'), digits = 0, mark=',')
 ```
 <br>
-There are a lot of counties in Mississippi and Alabama topping the list for obesity. These counties are also lower in population than average.
+There are a lot of counties in Mississippi and Alabama topping the list for obesity. These counties are also lower in population than average. It is striking that in most of these counties, more than 50% of the population is obese. 
 
 How similar are the patterns of obesity and diabetes? Several counties appear on both lists and there is a fair amount of overlap in terms of state representation.
 ```{r}
@@ -883,38 +883,6 @@ The obesity map follows a pattern similar to the diabetes map, except that areas
 To put this in context, it may be helpful to see how these areas relate to population density.
 
 ```{r}
-# # Map 3: Population Density
-# p_density <- ggplot(tracts_health) +
-#   geom_sf(aes(fill = log10(pop_density + 1)), color = NA, size = 0.1) +
-#   scale_fill_gradientn(
-#     colors = c("grey90","#9badff", "#0432ff" ),
-#     #colors = c("grey90","#e792e7", "#932092" ),
-#     #colors = c("deepskyblue4", "aliceblue", "darkred"),
-#     name = "Population\nDensity\n(log scale)",
-#     na.value = "grey90",
-#     labels = function(x) round(10^x, 0)
-#   ) +
-#   theme_minimal() +
-#   theme(
-#     axis.text = element_blank(),
-#     axis.ticks = element_blank(),
-#     panel.grid = element_blank(),
-#     plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
-#     plot.subtitle = element_text(hjust = 0.5),
-#     plot.caption = element_text(size = 10, face = "italic", hjust = 0),
-#     legend.title = element_text(size = 12),
-#     legend.text = element_text(size = 10)
-#   )  +
-#   theme(
-#     legend.position = "bottom",
-#     #legend.spacing.x = unit(1, "cm"), # Increase horizontal spacing
-#     legend.key.width = unit(2, "cm")
-#     ) +
-#   scale_x_continuous(limits = c(-125, -67)) +
-#   scale_y_continuous(limits = c(25, 50)) +
-#   labs(title = "Population Density",
-#        subtitle = "by Census Tract (people per sq mi)",
-#        caption = "Source: CDC PLACES 2025")
 # Map 3: Population Density
 p_density <- ggplot(tracts_health) +
   geom_sf(aes(fill = log10(pop_density + 1)), color = NA, size = 0.1) +
@@ -1076,7 +1044,7 @@ analyze_diabetes_trends <- function(temporal_data) {
 
 trend_analysis <- analyze_diabetes_trends(temporal_diabetes)
 ```
-As should be clear through the maps, diabetes prevalence is growing substantially. Looking at the data for **`r format(nrow(trend_analysis), big.mark =',')`** counties, the median absolute change is **`r round(median(trend_analysis$absolute_change, na.rm = TRUE), 2)` percentage points** and the median percent change is **`r round(median(trend_analysis$percent_change, na.rm = TRUE), 2)`%.**
+As should be clear through the maps, diabetes prevalence is growing substantially. Looking at the data for **`r format(nrow(trend_analysis), big.mark =',')`** counties, the median absolute change is **`r round(median(trend_analysis$absolute_change, na.rm = TRUE), 2)` percentage points** and the median percent change is **`r round(median(trend_analysis$percent_change, na.rm = TRUE), 2)`%.** It is not an exaggeration to characterize the situation as an epidemic.
 
 What might account for this trend? More obesity and less physical activity could be a factor. An aging population could be another. It might also be due to increased diagnosis and better access to healthcare. In other words, it's possible that the actual rate didn't change, but that the recognized rate changed.
 
@@ -1103,7 +1071,7 @@ trend_analysis |>
 Looking at the counties with the biggest change, we see that counties in Ohio and Florida, states with high populations, are on the top of this list.
 
 ## State Maps
-Let's take a closer look at some of the states where the incidence was especially high: TX, AL, MS, and WV.
+Let's take a closer look at some of the states where the incidence was especially high: Texas, Alabama, Mississippi, and West Virginia.
 ```{r}
 #| code-summary: "CODE: TX state maps"
 #| message: false
@@ -1173,6 +1141,15 @@ create_density_map <- function(state_abbr = NULL) {
     caption = "Source: CDC PLACES 2025")
 }
 
+# TX stats
+tx_health <- health_wide |>
+  filter(stateabbr=='TX') |>
+  summarize(
+    state_pop = sum(totalpopulation),
+    avg_diabetes = mean(diabetes),
+    avg_obesity = mean(obesity)
+    )
+
 # TX state maps
 TX_diabetes <- create_state_map("TX", "Diabetes", "diabetes")
 TX_obesity <- create_state_map("TX", "Obesity", "obesity")
@@ -1183,7 +1160,7 @@ combined_plot <- TX_diabetes + TX_obesity + plot_layout(ncol = 2)
 combined_plot
 
 ```
-While Texas did not have the very highest levels by state, it is the largest state in terms of population with levels above the median in both measures. This makes it worth a closer look. We can see that levels are especially high in the west and along the border with Mexico.
+Texas has a population of **`r format(tx_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(tx_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(tx_health$avg_diabetes, 1)`%** per census tract. While Texas did not have the very highest levels by state, it is the largest state in terms of population with levels above the median in both measures. This makes it worth a closer look. We can see that levels are especially high in the west and along the border with Mexico.
 
 ```{r}
 #| code-summary: "CODE: AL state maps"
@@ -1192,11 +1169,20 @@ While Texas did not have the very highest levels by state, it is the largest sta
 AL_diabetes <- create_state_map("AL", "Diabetes", "diabetes")
 AL_obesity <- create_state_map("AL", "Obesity", "obesity")
 
+# AL stats
+al_health <- health_wide |>
+  filter(stateabbr=='AL') |>
+  summarize(
+    state_pop = sum(totalpopulation),
+    avg_diabetes = mean(diabetes),
+    avg_obesity = mean(obesity)
+    )
+
 # Combined view (side by side instead of stacked)
 combined_plot2 <- AL_diabetes + AL_obesity + plot_layout(ncol = 2)
 combined_plot2
 ```
-Alabama has the third-highest level by states in diabetes and the fourth-highest in obesity. We can see that the highest levels are concentrated in the south and especially southwestern parts of the state.
+Alabama has a population of **`r format(al_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(al_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(al_health$avg_diabetes, 1)`%** per census tract. Alabama has the third-highest level by states in diabetes and the fourth-highest in obesity. We can see that the highest levels are concentrated in the south and especially southwestern parts of the state.
 ```{r}
 #| code-summary: "CODE: MS state maps"
 #| message: false
@@ -1204,11 +1190,20 @@ Alabama has the third-highest level by states in diabetes and the fourth-highest
 MS_diabetes <- create_state_map("MS", "Diabetes", "diabetes")
 MS_obesity <- create_state_map("MS", "Obesity", "obesity")
 
+# MS stats
+ms_health <- health_wide |>
+  filter(stateabbr=='MS') |>
+  summarize(
+    state_pop = sum(totalpopulation),
+    avg_diabetes = mean(diabetes),
+    avg_obesity = mean(obesity)
+    )
+
 # Combined view (side by side instead of stacked)
 combined_plot3 <- MS_diabetes + MS_obesity + plot_layout(ncol = 2)
 combined_plot3
 ```
-Mississippi has the highest level of obesity and the second highest level of diabetes. We notice high levels throughout the state and the highest concentrations are along the western side of the state.
+Mississippi has a population of **`r format(ms_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(ms_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(ms_health$avg_diabetes, 1)`%** per census tract. Mississippi has the highest level of obesity and the second highest level of diabetes. We notice high levels throughout the state and the highest concentrations are along the western side of the state.
 
 ```{r}
 #| code-summary: "CODE: WV state maps"
@@ -1217,11 +1212,20 @@ Mississippi has the highest level of obesity and the second highest level of dia
 WV_diabetes <- create_state_map("WV", "Diabetes", "diabetes")
 WV_obesity <- create_state_map("WV", "Obesity", "obesity")
 
+# WV stats
+wv_health <- health_wide |>
+  filter(stateabbr=='WV') |>
+  summarize(
+    state_pop = sum(totalpopulation),
+    avg_diabetes = mean(diabetes),
+    avg_obesity = mean(obesity)
+    )
+
 # Combined view (side by side instead of stacked)
 combined_plot4 <- WV_diabetes + WV_obesity + plot_layout(ncol = 2)
 combined_plot4
 ```
-West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
+West Virginia has a population of **`r format(wv_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(wv_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(wv_health$avg_diabetes, 1)`%** per census tract. West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
 
 ## Conclusion
 Let's plot the correlation between obesity and diabetes more explicitly.
