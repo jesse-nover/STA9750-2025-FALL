@@ -1244,7 +1244,7 @@ combined_plot4
 West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
 
 ## Conclusion
-Let's plot the correlation between obesity and diabetes.
+Let's plot the correlation between obesity and diabetes more explicitly.
 ```{r}
 #| code-summary: "CODE: Correlation"
 #| message: false
@@ -1273,7 +1273,12 @@ if(nrow(cor_data) > 0) {
 }
 
 ```
-As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well. 
+As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well.
+
+While the goal of this investigation wasn't specifically to "solve" the problem of diabetes, addressing obesity (perhaps with the usual approach of diet and exercise changes) would appear to be a clear way to reduce the incidence of type 2 diabetes. The elevated prevalence of both factors in rural areas suggests that public health advocates need to seek strategies to reach small and dispersed communities to provide appropriate education and/or interventions.
+
+As far as the role of food access and the impact of food deserts on the incidence of obesity and diabetes, see the [full report](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html).
+
 ```{r}
 #| code-summary: "CODE: Save data files"
 #| message: false
