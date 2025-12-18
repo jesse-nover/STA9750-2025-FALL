@@ -44,6 +44,7 @@ table.dataTable tbody td {
 }
 
 ```
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
 ## Introduction
 This project looks at diabetes and obesity patterns in the United States. It is part of a [larger investigation](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html) into the idea of **food deserts**, or communities with limited access to nutritious and affordable food. While the exact definition of a food desert is subject to some ongoing debate, this explanation from the USDA is helpful:
@@ -56,11 +57,11 @@ This project looks at diabetes and obesity patterns in the United States. It is 
 The motivation for this work is to answer the question: **Are food deserts in the US linked to health problems like diabetes?** 
 
 ## Data Acquisition
-This project will use [CDC Places](https://www.cdc.gov/places/about/index.html) data. According to the CDC site:
+This project will use [CDC PLACES](https://www.cdc.gov/places/about/index.html) data. According to the CDC site:
 
 > PLACES provides health and health-related data using small-area estimation for counties, incorporated and census designated places, census tracts, and ZIP Code Tabulation Areas (ZCTAs) across the United States. This project, which started in 2015, is a partnership between CDC, the Robert Wood Johnson Foundation (RWJF), and CDC Foundation.
 
-The CDC Places data will be retrieved via an API and stored locally in .rds cache files for faster retrieval subsequently.
+The CDC PLACES data will be retrieved via an API and stored locally in .rds cache files for faster retrieval subsequently.
 ```{r}
 #| code-summary: "CODE: Download and setup data files"
 #| message: false
@@ -264,10 +265,6 @@ if (file.exists(places_cache_file)) {
   cat("Cache saved!\n")
 }
 
-# Check column names
-# cat("\nColumn names in downloaded data:\n")
-# print(names(places_data))
-
 # Process health data
 # Handle different possible column name variations
 if ("tractfips" %in% names(places_data)) {
@@ -351,9 +348,7 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
     file_path <- file.path("data", "final", paste0("diabetes_trends_", year, ".csv"))
     
     if (file.exists(file_path)) {
-      # cat(paste("Loading data for", year, "...\n"))
-      # Read the file, skipping the first metadata row
-      # The actual data structure is CSV-within-CSV
+
       df <- read_csv(file_path, 
                      skip = 1,  # Skip "Data downloaded on..." row
                      show_col_types = FALSE,
@@ -397,9 +392,7 @@ load_temporal_diabetes <- function(years = c(2004, 2009, 2014, 2019)) {
   
   if (length(temporal_data) > 0) {
     all_years <- bind_rows(temporal_data)
-    # cat(paste("\nTotal records loaded:", nrow(all_years), "\n"))
-    # cat(paste("Years:", paste(unique(all_years$year), collapse=", "), "\n"))
-    # cat(paste("Counties per year:", nrow(all_years) / length(unique(all_years$year)), "\n"))
+
     return(all_years)
   } else {
     cat("\nNo temporal data files found. To download:\n")
@@ -439,7 +432,6 @@ if (file.exists(tracts_cache_file)) {
   })
   
   # Save to cache
-  # cat("Saving census tracts to cache...\n")
   saveRDS(us_tracts, tracts_cache_file)
 }
 
@@ -583,6 +575,7 @@ top_diabetes |>
   formatRound(c('Totalpopulation'), digits = 0, mark=',') |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
+<br>
 Census tracts can vary greatly in terms of population and incidence. In some cases, a census tract may distort the view of incidence. For example, the CA tract topping this list is entirely populated by residents in an assisted living facility in San Francisco, and the NY tract near the top is only home to residents of a VA assisted living facility in Queens. These tracts are clearly outliers and not representative of the larger population trends.
 ```{r}
 #| code-summary: "CODE: Top 5 Census Tracts with Highest Obesity Prevalence:"
@@ -608,6 +601,7 @@ top_obesity |>
   formatRound(c('Totalpopulation'), digits = 0, mark=',') |>
   formatRound(c('Diabetes', 'Obesity'), digits = 1)
 ```
+<br>
 Similarly, the NY census tracts appearing on this list for obesity are either entirely or partially populated by inmates in a correctional facility, which also likely does not represent the overall trend well.
 
 To zoom out just a bit, it may be more helpful to look at things at the county level.
@@ -886,16 +880,47 @@ The obesity map follows a pattern similar to the diabetes map, except that areas
 To put this in context, it may be helpful to see how these areas relate to population density.
 
 ```{r}
+# # Map 3: Population Density
+# p_density <- ggplot(tracts_health) +
+#   geom_sf(aes(fill = log10(pop_density + 1)), color = NA, size = 0.1) +
+#   scale_fill_gradientn(
+#     colors = c("grey90","#9badff", "#0432ff" ),
+#     #colors = c("grey90","#e792e7", "#932092" ),
+#     #colors = c("deepskyblue4", "aliceblue", "darkred"),
+#     name = "Population\nDensity\n(log scale)",
+#     na.value = "grey90",
+#     labels = function(x) round(10^x, 0)
+#   ) +
+#   theme_minimal() +
+#   theme(
+#     axis.text = element_blank(),
+#     axis.ticks = element_blank(),
+#     panel.grid = element_blank(),
+#     plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+#     plot.subtitle = element_text(hjust = 0.5),
+#     plot.caption = element_text(size = 10, face = "italic", hjust = 0),
+#     legend.title = element_text(size = 12),
+#     legend.text = element_text(size = 10)
+#   )  +
+#   theme(
+#     legend.position = "bottom",
+#     #legend.spacing.x = unit(1, "cm"), # Increase horizontal spacing
+#     legend.key.width = unit(2, "cm")
+#     ) +
+#   scale_x_continuous(limits = c(-125, -67)) +
+#   scale_y_continuous(limits = c(25, 50)) +
+#   labs(title = "Population Density",
+#        subtitle = "by Census Tract (people per sq mi)",
+#        caption = "Source: CDC PLACES 2025")
 # Map 3: Population Density
 p_density <- ggplot(tracts_health) +
   geom_sf(aes(fill = log10(pop_density + 1)), color = NA, size = 0.1) +
   scale_fill_gradientn(
-    colors = c("grey90","#9badff", "#0432ff" ),
-    #colors = c("grey90","#e792e7", "#932092" ),
-    #colors = c("deepskyblue4", "aliceblue", "darkred"),
+    colors = c("grey95", "grey85", "#9badff", "#4169e1", "#0432ff", "#001a80"),
+    values = c(0, 0.15, 0.35, 0.55, 0.75, 1),  # Push more colors toward high densities
     name = "Population\nDensity\n(log scale)",
     na.value = "grey90",
-    labels = function(x) round(10^x, 0)
+    labels = function(x) scales::comma(round(10^x, 0))
   ) +
   theme_minimal() +
   theme(
@@ -907,12 +932,11 @@ p_density <- ggplot(tracts_health) +
     plot.caption = element_text(size = 10, face = "italic", hjust = 0),
     legend.title = element_text(size = 12),
     legend.text = element_text(size = 10)
-  )  +
+  ) +
   theme(
     legend.position = "bottom",
-    #legend.spacing.x = unit(1, "cm"), # Increase horizontal spacing
     legend.key.width = unit(2, "cm")
-    ) +
+  ) +
   scale_x_continuous(limits = c(-125, -67)) +
   scale_y_continuous(limits = c(25, 50)) +
   labs(title = "Population Density",
@@ -1004,27 +1028,12 @@ create_temporal_maps <- function(temporal_data, years = c(2004, 2009, 2014, 2019
   }
 }
 
-# Try to load temporal data
-# cat("\n=== Attempting to load temporal diabetes data ===\n")
-# temporal_diabetes <- load_temporal_diabetes(years = c(2004, 2009, 2014, 2019))
+# load temporal data
 
 if (!is.null(temporal_diabetes)) {
   # Create temporal maps
   temporal_maps <- create_temporal_maps(temporal_diabetes)
   
-  #if (!is.null(temporal_maps)) {
-    # Display individual maps if needed
-    # print(temporal_maps$maps[["2004"]])
-    # print(temporal_maps$maps[["2019"]])
-    
-    # Display the 2x2 grid
-    #if (!is.null(temporal_maps$grid)) {
-      # print(temporal_maps$grid)
-    #}
-  #}
-  
-  # Analyze trends
-  #trend_analysis <- analyze_diabetes_trends(temporal_diabetes)
 }
 
 temporal_maps$grid
@@ -1247,5 +1256,5 @@ As suggested previously, there is a strong, positive linear relationship between
 
 While the goal of this investigation wasn't specifically to "solve" the problem of diabetes, addressing obesity (perhaps with the usual approach of diet and exercise changes) would appear to be a clear way to reduce the incidence of type 2 diabetes. The elevated prevalence of both factors in rural areas suggests that public health advocates need to seek strategies to reach small and dispersed communities to provide appropriate education and/or interventions.
 
-As far as the role of food access and the impact of food deserts on the incidence of obesity and diabetes, see the [full report](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html).
+As far as the role of food access and the impact of food deserts on the incidence of obesity and diabetes, see the [full report](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html) for the complete story.
 
