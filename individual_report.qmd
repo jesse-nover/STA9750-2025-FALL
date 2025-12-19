@@ -1303,6 +1303,7 @@ ggplot(nyc_tracts) +
     panel.grid = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
     plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0),
     legend.position = "bottom",
     legend.title = element_text(size = 12),
     legend.text = element_text(size = 10)
@@ -1337,6 +1338,7 @@ ggplot(nyc_tracts) +
     panel.grid = element_blank(),
     plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
     plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(size = 10, face = "italic", hjust = 0),
     legend.position = "bottom"
   ) +
   labs(
@@ -1346,6 +1348,28 @@ ggplot(nyc_tracts) +
   )
 ```
 Here, too, we notice elevated values of obesity in the Bronx along with southeastern Queens and eastern Brooklyn.
+
+```{r}
+#| code-summary: "CODE: NYC vs. USA"
+#| message: false
+#| warning: false
+# National stats
+national_avg <- tracts_health %>%
+  st_drop_geometry() %>%
+  summarise(
+    national_diabetes = mean(diabetes, na.rm = TRUE),
+    national_obesity = mean(obesity, na.rm = TRUE)
+  )
+
+# NYC stats
+nyc_avg <- nyc_data %>%
+  st_drop_geometry() %>%
+  summarise(
+    nyc_diabetes = mean(diabetes, na.rm = TRUE),
+    nyc_obesity = mean(obesity, na.rm = TRUE)
+  )
+```
+The average rate of of diabetes in NYC (by census tract) is **`r round(nyc_avg$nyc_diabetes, 2)`%** vs. **`r round(national_avg$national_diabetes, 2)`%** for the whole country. The average rate of of obesity in NYC is **`r round(nyc_avg$nyc_obesity, 2)`%** vs. **`r round(national_avg$national_obesity, 2)`%**. We can conclude that at least in these metrics, New York is a healthier American place than average.
 
 ## Conclusion
 Let's plot the correlation between obesity and diabetes more explicitly.
