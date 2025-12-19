@@ -1420,6 +1420,65 @@ urban_rural_summary |> format_titles() |>
 <br>
 This table seems to further support the notion that the prevalence of obesity and diabetes increases as population density is reduced. Why would this be the case? One could surmise that greater access to healthcare, more walkable neighborhoods, and younger, more affluent populations could be factors. 
 
+Finally let's use a statistical test to be a bit more certain. Using a population density of 1,000 people per square mile to divide census tracts into urban and rural, let's test a hypothesis.
+
+**H~0~: The rural rate of diabetes - the urban rate of diabetes = 0**
+
+**H~a~: The rural rate of diabetes - the urban rate of diabetes ≠ 0**
+
+```{r}
+#| code-summary: "CODE: t-test for diabetes"
+#| message: false
+#| warning: false
+# Two-category classification
+tracts_health <- tracts_health %>%
+  mutate(
+    location_type = ifelse(pop_density >= 1000, "Urban", "Rural")
+  )
+
+# T-test for diabetes significance
+library(infer)
+tracts_health |> t_test(diabetes ~ location_type, order=c("Urban", "Rural")) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+  ) |>
+  formatRound(c('Statistic', 'T Df', 'P Value', 'Estimate', 'Lower Ci', 'Upper Ci'), digits = 3) 
+
+```
+<br>
+As we can see from the p-value of 0, there is a statistically significant difference in diabetes rates between urban and rural areas.
+
+Similarly, let's test another hypothesis for obesity.
+
+**H~0~: The rural rate of obesity - the urban rate of obesity = 0**
+
+**H~a~: The rural rate of obesity - the urban rate of obesity ≠ 0**
+
+```{r}
+#| code-summary: "CODE: t-test for obesity"
+#| message: false
+#| warning: false
+
+# T-test for obesity significance
+tracts_health |> t_test(obesity ~ location_type, order=c("Urban", "Rural")) |>
+  format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+  ) |>
+  formatRound(c('Statistic', 'T Df', 'P Value', 'Estimate', 'Lower Ci', 'Upper Ci'), digits = 3) 
+```
+<br>
+Again, as we can see from the p-value of 0, there is a statistically significant difference in obesity rates between urban and rural areas.
+
 ## Conclusion
 Let's plot the correlation between obesity and diabetes more explicitly.
 ```{r}
