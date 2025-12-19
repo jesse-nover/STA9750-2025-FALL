@@ -1280,7 +1280,7 @@ nyc_summary |> format_titles() |>
   formatRound(c('Population'), digits = 0, mark=',')
 ```
 <br>
-While the 5 boroughs—technically counties—did not appear among the top 10 for obesity or diabetes, it should be clear that even a modest percent represents a significant population. For example, the Bronx has a population of **`r format(bronx_details$population, big.mark = ',')`** which means **`r format(bronx_details$obesity_pop, big.mark = ',')`** are obese and **`r format(bronx_details$diabetes_pop, big.mark = ',')`** have diabetes.
+While the 5 boroughs—technically counties—did not appear among the top 10 for obesity or diabetes, it should be clear that even a modest percent represents a significant population. For example, the Bronx has a population of **`r format(bronx_details$population, big.mark = ',')`** which means **`r format(bronx_details$obesity_pop, big.mark = ',')`** are obese and **`r format(round(bronx_details$diabetes_pop, 0), big.mark = ',')`** have diabetes.
 ```{r}
 #| code-summary: "CODE: Diabetes in NYC"
 #| message: false
