@@ -1227,6 +1227,126 @@ combined_plot4
 ```
 West Virginia has a population of **`r format(wv_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(wv_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(wv_health$avg_diabetes, 1)`%** per census tract. West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
 
+## New York City
+This project was originally conceived of as a New York City-focused investigation before our team expanded our focus to the whole country. Up until now, the data has lead us to notice rural extremes. Let's take a moment to look at New York City.
+
+```{r}
+#| code-summary: "CODE: Diabetes in NYC"
+#| message: false
+#| warning: false
+# Create NYC subset
+nyc_data <- tracts_health %>%
+  filter(STATEFP == "36" & COUNTYFP %in% c("005", "047", "061", "081", "085"))
+
+# Add borough names
+nyc_data <- nyc_data %>%
+  mutate(borough = case_when(
+    COUNTYFP == "005" ~ "Bronx",
+    COUNTYFP == "047" ~ "Brooklyn",
+    COUNTYFP == "061" ~ "Manhattan",
+    COUNTYFP == "081" ~ "Queens",
+    COUNTYFP == "085" ~ "Staten Island"
+  ))
+
+# Summary by borough
+nyc_summary <- nyc_data %>%
+  st_drop_geometry() %>%
+  group_by(borough) %>%
+  summarise(
+    n_tracts = n(),
+    avg_diabetes = mean(diabetes, na.rm = TRUE),
+    avg_obesity = mean(obesity, na.rm = TRUE),
+    population = sum(totalpopulation, na.rm = TRUE)
+  ) %>%
+  arrange(desc(avg_diabetes))
+
+# bronx example
+bronx_details <- nyc_summary |>
+  filter(borough == 'Bronx') |>
+  mutate(
+    obesity_pop = avg_obesity/100 * population,
+    diabetes_pop = avg_diabetes/100 * population
+  )
+
+nyc_summary |> format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+  ) |>
+  formatRound(c('Avg Diabetes', 'Avg Obesity'), digits = 1) |>
+  formatRound(c('Population'), digits = 0, mark=',')
+```
+<br>
+While the 5 boroughs—technically counties—did not appear among the top 10 for obesity or diabetes, it should be clear that even a modest percent represents a significant population. For example, the Bronx has a population of **`r format(bronx_details$population, big.mark = ',')`** which means **`r format(bronx_details$obesity_pop, big.mark = ',')`** are obese and **`r format(bronx_details$diabetes_pop, big.mark = ',')`** have diabetes.
+```{r}
+#| code-summary: "CODE: Diabetes in NYC"
+#| message: false
+#| warning: false
+nyc_tracts <- tracts_health %>%
+  filter(STATEFP == "36" & COUNTYFP %in% c("005", "047", "061", "081", "085"))
+# NYC Diabetes Map
+ggplot(nyc_tracts) +
+  geom_sf(aes(fill = diabetes), color = "white", size = 0.1) +
+  scale_fill_gradientn(
+    colors = c("grey90","#9badff", "#0432ff"),
+    name = "Diabetes\nPrevalence (%)\n",
+    na.value = "grey95",
+    limits = c(5, 20)
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom",
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10)
+  ) +
+  labs(
+    title = "Diabetes Prevalence in New York City",
+    subtitle = "by Census Tract",
+    caption = "Data source: CDC PLACES 2025"
+  )
+
+
+```
+Here we can see that the Bronx is in fact showing high levels of diabetes along with southeastern Queens and eastern Brooklyn.
+```{r}
+#| code-summary: "CODE: Obesity in NYC"
+#| message: false
+#| warning: false
+
+# NYC Obesity Map
+ggplot(nyc_tracts) +
+  geom_sf(aes(fill = obesity), color = "white", size = 0.1) +
+  scale_fill_gradientn(
+    colors = c("grey90","#9badff", "#0432ff"),
+    name = "Obesity\nPrevalence (%)\n",
+    na.value = "grey95",
+    limits = c(15, 45)
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom"
+  ) +
+  labs(
+    title = "Obesity Prevalence in New York City",
+    subtitle = "by Census Tract",
+    caption = "Data source: CDC PLACES 2025"
+  )
+```
+Here, too, we notice elevated values of obesity in the Bronx along with southeastern Queens and eastern Brooklyn.
+
 ## Conclusion
 Let's plot the correlation between obesity and diabetes more explicitly.
 ```{r}
@@ -1261,7 +1381,7 @@ print(p3)
 ```
 As suggested previously, there is a strong, positive linear relationship between these measures. This means that as one value goes up, the other tends to go up as well. The correlation between diabetes and obesity is **`r round(cor_value, 3)`**. For context, a correlation of 1 would indicate a perfect correlation, 0 would mean that there is no linear relationship, and -1 would indicate a perfect negative correlation.
 
-While the goal of this investigation wasn't specifically to "solve" the problem of diabetes, addressing obesity (perhaps with the usual approach of diet and exercise changes) would appear to be a clear way to reduce the incidence of type 2 diabetes. The elevated prevalence of both factors in rural areas suggests that public health advocates need to seek strategies to reach small and dispersed communities to provide appropriate education and/or interventions.
+While the goal of this investigation wasn't specifically to "solve" the problem of diabetes, addressing obesity (perhaps with the usual approach of diet and exercise changes) would appear to be a clear way to reduce the incidence of type 2 diabetes. The elevated prevalence of both factors in rural areas suggests that public health advocates need to seek strategies to reach small and dispersed communities to provide appropriate education and/or interventions. At the same time, there are significant urban populations that also require attention and different strategies may be required. 
 
 As far as the role of food access and the impact of food deserts on the incidence of obesity and diabetes, see the [full report](https://festrada0817.github.io/STA9750-2025-FALL/FinalProjectPresentation2025.html) for the complete story.
 
