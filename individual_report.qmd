@@ -1228,7 +1228,7 @@ combined_plot4
 West Virginia has a population of **`r format(wv_health$state_pop, big.mark = ',')`**, an average obesity rate of **`r round(wv_health$avg_obesity, 1)`%** and an average diabetes rate of **`r round(wv_health$avg_diabetes, 1)`%** per census tract. West Virginia has the highest level of diabetes and the second highest level of obesity. High levels of each are distributed throughout the state.
 
 ## New York City
-This project was originally conceived of as a New York City-focused investigation before our team expanded our focus to the whole country. Up until now, the data has lead us to notice rural extremes. Let's take a moment to look at New York City.
+This project was originally conceived of as a New York City-focused investigation before our team expanded our focus to the whole country. Up to this point in the report, the data has lead us to notice rural extremes. Let's take a moment to look at New York City.
 
 ```{r}
 #| code-summary: "CODE: Diabetes in NYC"
@@ -1370,6 +1370,55 @@ nyc_avg <- nyc_data %>%
   )
 ```
 The average rate of of diabetes in NYC (by census tract) is **`r round(nyc_avg$nyc_diabetes, 2)`%** vs. **`r round(national_avg$national_diabetes, 2)`%** for the whole country. The average rate of of obesity in NYC is **`r round(nyc_avg$nyc_obesity, 2)`%** vs. **`r round(national_avg$national_obesity, 2)`%**. We can conclude that at least in these metrics, New York is a healthier American place than average.
+
+Can we say something more about the urban/rural divide related to these conditions?
+
+```{r}
+#| code-summary: "CODE: Urban vs. rural"
+#| message: false
+#| warning: false
+# Define urban/rural based on population density thresholds
+tracts_health <- tracts_health %>%
+  mutate(
+    urban_rural = case_when(
+      pop_density >= 3000 ~ "Urban Core",
+      pop_density >= 1000 ~ "Urban",
+      pop_density >= 500 ~ "Suburban",
+      pop_density >= 100 ~ "Rural",
+      TRUE ~ "Very Rural"
+    ),
+    # Make it an ordered factor for proper sorting
+    urban_rural = factor(urban_rural, 
+                         levels = c("Urban Core", "Urban", "Suburban", "Rural", "Very Rural"))
+  )
+
+# Compare rates
+urban_rural_summary <- tracts_health %>%
+  st_drop_geometry() %>%
+  group_by(urban_rural) %>%
+  summarise(
+    n_tracts = n(),
+    total_population = sum(totalpopulation, na.rm = TRUE),
+    avg_diabetes = mean(diabetes, na.rm = TRUE),
+    median_diabetes = median(diabetes, na.rm = TRUE),
+    avg_obesity = mean(obesity, na.rm = TRUE),
+    median_obesity = median(obesity, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+urban_rural_summary |> format_titles() |>
+  datatable(
+    options = list(
+      searching = FALSE,
+      paging = FALSE,
+      info = FALSE,
+      ordering = FALSE),
+  ) |>
+  formatRound(c('Avg Diabetes', 'Median Diabetes', 'Avg Obesity', 'Median Obesity'), digits = 1) |>
+  formatRound(c('N Tracts', 'Total Population'), digits = 0, mark=',')
+```
+<br>
+This table seems to further support the notion that the prevalence of obesity and diabetes increases as population density is reduced. Why would this be the case? One could surmise that greater access to healthcare, more walkable neighborhoods, and younger, more affluent populations could be factors. 
 
 ## Conclusion
 Let's plot the correlation between obesity and diabetes more explicitly.
